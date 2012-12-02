@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
+  <title><![CDATA[AngryGantz]]></title>
   <link href="http://AngryGantz.github.com/atom.xml" rel="self"/>
   <link href="http://AngryGantz.github.com/"/>
-  <updated>2012-12-02T20:35:12+06:00</updated>
+  <updated>2012-12-02T21:12:29+06:00</updated>
   <id>http://AngryGantz.github.com/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
-    
+    <name><![CDATA[AngryGantz]]></name>
+    <email><![CDATA[angrygantz@gmail.com]]></email>
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
