@@ -1,0 +1,2 @@
+export LANG=ru_RU.utf8
+rake preview
