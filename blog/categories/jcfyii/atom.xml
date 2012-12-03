@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: JCFYii | AngryGantz]]></title>
+  <link href="http://AngryGantz.github.com/blog/categories/jcfyii/atom.xml" rel="self"/>
+  <link href="http://AngryGantz.github.com/"/>
+  <updated>2012-12-03T18:40:22+06:00</updated>
+  <id>http://AngryGantz.github.com/</id>
+  <author>
+    <name><![CDATA[AngryGantz]]></name>
+    <email><![CDATA[angrygantz@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[JCFYii 5. Дизайн-макет]]></title>
+    <link href="http://AngryGantz.github.com/blog/2012/12/03/jcfyii-5/"/>
+    <updated>2012-12-03T18:24:00+06:00</updated>
+    <id>http://AngryGantz.github.com/blog/2012/12/03/jcfyii-5</id>
+    <content type="html"><![CDATA[<p>Надо поднастроить <strong>main.css</strong>. Во первых дать отступ body на ширину меню, во вторых убрать border. Пусть страничка беленькая будет. Получаем вот такой код css для трех важных для этого элементов:</p>
+
+<!-- more -->
+
+
+<h3>main.css</h3>
+
+<p>```css
+body
+{</p>
+
+<pre><code>margin: 0;
+padding: 0;
+color: #555;
+font: normal 10pt Arial,Helvetica,sans-serif;
+background: #EFEFEF;
+</code></pre>
+
+<p>}</p>
+
+<h1>page</h1>
+
+<p>{</p>
+
+<pre><code>margin-top: 40px;
+margin-bottom: 5px;
+background: white;
+</code></pre>
+
+<p>}</p>
+
+<h1>header</h1>
+
+<p>{</p>
+
+<pre><code>margin: 0;
+padding: 0;
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Впрочем, Header нам сейчас не нужен. Разве что крошки туда загнать. Так и делаем. Вот от этого беленьекого листа с симпатишной менюшкой и будем плясать.</p>
+
+<p>Крошки загоняем в Header и меняем виджет на bootstrap:</p>
+
+<p>```php
+&lt;?php
+if (isset($this->breadcrumbs)):</p>
+
+<pre><code>$this-&gt;widget('bootstrap.widgets.TbBreadcrumbs', array(
+    'links' =&gt; $this-&gt;breadcrumbs,
+));
+</code></pre>
+
+<p>endif
+?>
+```</p>
+
+<p>Мои благие намерения не лезть в модули канули в лето. Но уж больно мне не понравился дизайн вьюшек Yii-User. Полностью переделал все вьюшки в "bootrap-style" Постараюсь хотя бы логику не трогать. В этом вроде как необходимости нет слава богу.</p>
+
+<p>Итак, готовый скелет с работающей системой управления пользователями на основе ролей можно считать есть.
+По хорошему конечно потестировать бы с недельку уже на этом этапе, но не в продакшен сайи идёт, пока так, баловство. Так что этот этап пропустим пока. Хотя потом надо будет заняться вопросами тестирования приложений на yii всерьёз. Как никак это чуть ли не половина работы на нормальном проекте.</p>
+
+<h2>Меню</h2>
+
+<p>Может я не понимаю своего счастья, но виджет CMenu меня не впечатлил. Будем делать меню на любимом Bootstrap
+И кстати есть желание поделить лайоут main на несколько файлов для наглядности. В частности меню рисовать в отдельном файле, вызывамом из главного. Обзовём _menu.php и приступим.</p>
+
+<p>Старое загоним в файл _cmenu, на всякий случай. И оба файлика положим в созданную папку <strong>layouts/add</strong>
+из лайоута <strong>main</strong> меню будем подтягивать кодом <code>&lt;?php require_once '/add/_cmenu.php'; ?&gt;</code></p>
+
+<p>Беру из документации пример менюшки, загоняю в <strong>_menu.php</strong> и смотрю что получилось -)</p>
+
+<p>```php
+&lt;?php $this->widget('bootstrap.widgets.TbNavbar', array(</p>
+
+<pre><code>'type'=&gt;'inverse', // null or 'inverse'
+'brand'=&gt;'Project name',
+'brandUrl'=&gt;'#',
+'collapse'=&gt;true, // requires bootstrap-responsive.css
+'items'=&gt;array(
+    array(
+        'class'=&gt;'bootstrap.widgets.TbMenu',
+        'items'=&gt;array(
+            array('label'=&gt;'Home', 'url'=&gt;'#', 'active'=&gt;true),
+            array('label'=&gt;'Link', 'url'=&gt;'#'),
+            array('label'=&gt;'Dropdown', 'url'=&gt;'#', 'items'=&gt;array(
+                array('label'=&gt;'Action', 'url'=&gt;'#'),
+                array('label'=&gt;'Another action', 'url'=&gt;'#'),
+                array('label'=&gt;'Something else here', 'url'=&gt;'#'),
+                '---',
+                array('label'=&gt;'NAV HEADER'),
+                array('label'=&gt;'Separated link', 'url'=&gt;'#'),
+                array('label'=&gt;'One more separated link', 'url'=&gt;'#'),
+            )),
+        ),
+    ),
+    '&lt;form class="navbar-search pull-left" action=""&gt;&lt;input type="text" class="search-query span2" placeholder="Search"&gt;&lt;/form&gt;',
+    array(
+        'class'=&gt;'bootstrap.widgets.TbMenu',
+        'htmlOptions'=&gt;array('class'=&gt;'pull-right'),
+        'items'=&gt;array(
+            array('label'=&gt;'Link', 'url'=&gt;'#'),
+            '---',
+            array('label'=&gt;'Dropdown', 'url'=&gt;'#', 'items'=&gt;array(
+                array('label'=&gt;'Action', 'url'=&gt;'#'),
+                array('label'=&gt;'Another action', 'url'=&gt;'#'),
+                array('label'=&gt;'Something else here', 'url'=&gt;'#'),
+                '---',
+                array('label'=&gt;'Separated link', 'url'=&gt;'#'),
+            )),
+        ),
+    ),
+),
+</code></pre>
+
+<p>)); ?>
+```</p>
+
+<p>Ошибок в консоли не видно, всё работает. Осталось донастроить и меню готово :-). Симпатишное, функциональное, красявое, за что и люблю bootstrap. Сайт будем делать светлым и менюшку тоже. Так что первым делом убираю инверсию.</p>
+
+<p>Делее правим строчку <code>'brandUrl'=&gt;'index'</code> - Это будет вместо кнопочки <strong>Home</strong>, которую выкидываем. Далее меняем label=>link на Label=>Каталог, оставляя пока Урл пустым, это на будущее. Далее будут Контакты, куда же без них.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JCFYii 4 Управление пользователями и правами.]]></title>
+    <link href="http://AngryGantz.github.com/blog/2012/12/03/jcfyii-4/"/>
+    <updated>2012-12-03T11:13:00+06:00</updated>
+    <id>http://AngryGantz.github.com/blog/2012/12/03/jcfyii-4</id>
+    <content type="html"><![CDATA[<p>Что нужно практически в любом web-приложении? Что бы мы не делали, практически всегда необходима система управления пользователями и их правами. Только совсем простейшие проекты обходятся без этого. Поэтому до перехода ко всему остальному надо прикрутить что-то такое к проекту.</p>
+
+<p>В Yii реализована схема управления правами RBAC, есть готовые менеджеры авторизации пользователей (для БД и файла). Чудненько. Но мы ещё упростим себе жизнь и не будем отписывать реализацию, а воспользуемся чем нибудь готовым. Как сказано в одном хорошем кино «всё уже покрадено до нас». Написано как правило тоже. Так что вперед, на офф сайт за нужными плюшками.</p>
+
+<!-- more -->
+
+
+<p>В разделе дополнений на офф сайте полно всякого разного по управлению пользователями и правами. Смотреть их все ни желания ни времени. Положимся на мнение общественности, рекомендующей Yii-User и Rights.</p>
+
+<h2>Yii-User</h2>
+
+<p><a href="http://www.yiiframework.com/extension/yii-user/">Страничка на оффсайте Yii</a></p>
+
+<p><a href="http://yii-user.2mx.org/">Домашняя страничка</a></p>
+
+<p>По описанию делает всё, что надо и не делает лишнего. Возможно не зря хвалили.
+Качаю, создаю папку <code>/protected/modules</code> , Папку <code>User</code> из архива кидаю туда.</p>
+
+<p>Далее всё включаем по мануалу в главном конфиге:</p>
+
+<p>В секцию <strong>import</strong> добавлено:</p>
+
+<pre><code>'application.models.*',
+'application.components.*',
+'application.modules.user.models.*',
+'application.modules.user.components.*',
+</code></pre>
+
+<ul>
+<li>В секцию <strong>modules</strong> после gii добавлено <code>user,</code></li>
+<li>В секции <strong>components</strong> уже прописан компонент <strong>user</strong>. Это демо-компонент, сгенерированный приложением.  Меняю на то, что в мануале по модулю:</li>
+</ul>
+
+
+<p>```php
+&lt;?php
+'user'=>array(</p>
+
+<pre><code>// enable cookie-based authentication
+'allowAutoLogin'=&gt;true,
+'loginUrl' =&gt; array('/user/login'),
+</code></pre>
+
+<p>),
+?>
+```</p>
+
+<p>Заодно надо почистить хвостики от старого. Удаляем компонент <strong>UserIdentity.php</strong>, из контроллера <strong>SiteController.php</strong> удаляем действия <strong>actionLogin()</strong> и <strong>actionLogout()</strong>, ибо использоваться будет модуль.  Так же удаляется полностью модель <strong>LoginForm.php</strong> и вьюшка <strong>site/login.php</strong>. Вроде всё. Идём дальше.</p>
+
+<ul>
+<li>Создание таблиц БД. Смотрим <strong>modules/user/data/schema.mysql.sql</strong> Там создание трёх таблиц и занесение пары аккаунтов - admin и demo. Вот только префиксы... Ну не люблю я эти «tbl_». Буду делать префиксы помодульно. Будет более менее осмысленно, когда (и если) проект разрастется. Меняю «tbl_» на «user_» и выполняю скрипт в MySQL. Но ведь очевидно, где-то была привязка к этим «tbl_». Начнем с файла модуля <strong>modules/user/UserModule.php</strong>. Нахожу вот такие строки:</li>
+</ul>
+
+
+<p>```php
+&lt;?php</p>
+
+<pre><code>public $tableUsers = '{ {users} }';
+public $tableProfiles = '{ {profiles} }';
+public $tableProfileFields = '{ {profiles_fields} }';
+</code></pre>
+
+<p>?>
+```</p>
+
+<p>Это даже не привязка к «tbl_». Даже не знаю, как понимать. Может это связано с настройкой модуля из консоли через миграции? Что-такое читал. Ну да бог с ним. В любом случае это паблик свойства и их можно переопределить прямо в глобальном конфиге приложения, в секции модуля <strong>user</strong>. Топаем в <strong>config/main.php</strong> и меняем сиротливую строку <code>user,</code> на секцию</p>
+
+<p>```php
+&lt;?php
+'user'=>array(</p>
+
+<pre><code>'tableUsers'=&gt;'user_users',
+'tableProfiles'=&gt;'user_profiles',
+'tableProfileFields'=&gt;'user_profiles_fields',
+</code></pre>
+
+<p>),</p>
+
+<p>?>
+```</p>
+
+<ul>
+<li>Ну и последнее. Прописать эти все радости в меню. Меню нарисовано в <strong>view/layouts/main.php</strong> Выбрасываю оттуда неактуальные <strong>Login</strong> и <strong>Logout</strong> и особо не всматриваясь копипастом из мануала загоняю туда блок</li>
+</ul>
+
+
+<p>```php
+&lt;?php
+array('url'=>Yii::app()->getModule('user')->loginUrl,</p>
+
+<pre><code>'label'=&gt;Yii::app()-&gt;getModule('user')-&gt;t("Login"), 'visible'=&gt;Yii::app()-&gt;user-&gt;isGuest),
+</code></pre>
+
+<p>array('url'=>Yii::app()->getModule('user')->registrationUrl,</p>
+
+<pre><code>'label'=&gt;Yii::app()-&gt;getModule('user')-&gt;t("Register"), 'visible'=&gt;Yii::app()-&gt;user-&gt;isGuest),
+</code></pre>
+
+<p>array('url'=>Yii::app()->getModule('user')->profileUrl,</p>
+
+<pre><code>'label'=&gt;Yii::app()-&gt;getModule('user')-&gt;t("Profile"), 'visible'=&gt;!Yii::app()-&gt;user-&gt;isGuest),
+</code></pre>
+
+<p>array('url'=>Yii::app()->getModule('user')->logoutUrl,</p>
+
+<pre><code>'label'=&gt;Yii::app()-&gt;getModule('user')-&gt;t("Logout").' ('.Yii::app()-&gt;user-&gt;name.')',      
+</code></pre>
+
+<p>'visible'=>!Yii::app()->user->isGuest),
+?>
+```</p>
+
+<p>Проверяем модуль. Ссылки меню, регистрация, логин-логаут, всё работает. Приятно. Да, всё конечно англицкое, придется с этим всем повозиться потом. Причём чует моё сердце писсимиста, что если делать интернационализацию "по фен-шую" то повозиться придется долго. В идеале даже во вьюшках текста прямого быть не должно, только вызовы мессаджей. Но боюсь, что на этот мазохизм меня всё таки не хватит. Хотя... Пишу же эти простыни, кто знает... :-)</p>
+
+<p>Но главное, модуль работает, логика своё отрабатывает, а внешний вид и языки потом. Сначала строим логику.</p>
+
+<h2>Модуль RIGHTS</h2>
+
+<p><a href="http://www.yiiframework.com/extension/rights">Страничка на оффсайте</a>
+Это модуль управления правами пользователей. Зачем он мне нужен? Ну как минимум у меня предполагается Гость, Админ, Клиент (дилер) и Менеджер. В дальнейшем возможно ещё розничные клиенты, какой нибудь старший менеджер и так далее и тому подобное. В Yii реализована система управления правами RBAC. <a href="http://yiiframework.ru/doc/guide/ru/topics.auth">Подробности тут</a>. Rights вроде как предоставляет полный инструментарий для управления и использования этой системы. То, что бегло прочитал, понравилось. Вопрос на сколько это удобно и как этот модуль "сработается" с предыдущим установленным - Yii-User. Начнем.</p>
+
+<h3>Установка.</h3>
+
+<p>Скачиваю мануальчик и сам модуль. Папку <strong>rights</strong> из архива кидаем в модули и читаем мануальчик.
+Так. Первое. В требованиях наличие БД (ну это понятно) и наличие модели <strong>user</strong> с атрибутами <strong>id</strong> и <strong>name</strong>. В нашей табличке <strong>user_users</strong> поле <strong>id</strong> есть, а вот вместо поля <strong>name</strong> имеем <strong>username</strong>. Но пролистав документацию в разделе конфигурации вижу <code>'userNameColumn'=&gt;'username',</code> причём это по дефолту, даже менять ничего не надо. Возвращаюсь к инсталляции модуля. Первое стандартно - импорт.</p>
+
+<p>```php
+&lt;?php
+'import'=>array(</p>
+
+<pre><code>'application.modules.rights.*', 
+'application.modules.rights.components.*', // Correct paths if necessary. 
+</code></pre>
+
+<p>),
+?>
+```</p>
+
+<p>А вот дальше интересно:</p>
+
+<p>```php
+&lt;?php
+'components'=>array(</p>
+
+<pre><code>'user'=&gt;array( 
+    'class'=&gt;'RWebUser', // Allows super users access implicitly. 
+),
+</code></pre>
+
+<p>'authManager'=>array(</p>
+
+<pre><code>    'class'=&gt;'RDbAuthManager', // Provides support authorization item sorting. 
+), 
+</code></pre>
+
+<p>),
+?>
+```</p>
+
+<p>С менеджером аутентификации всё ясно - подключаем менеджера, работающего через БД. А вот <strong>user</strong>...
+Гложат меня смутные сомнения что не всё гладко будет... Надеюсь зря.
+Делаем и продолжаем. Просто добавляем в секцию <strong>user</strong> компонентов (<strong>и не путать с аналогичной секцией в модулях!</strong>) строку с определением класса. Пока до выяснения получится вот что:</p>
+
+<p>```php
+&lt;?php
+'user'=>array(</p>
+
+<pre><code>    'class'=&gt;'RWebUser',
+    // enable cookie-based authentication
+    'allowAutoLogin'=&gt;true,
+    'loginUrl' =&gt; array('/user/login'),
+</code></pre>
+
+<p>),
+?>
+```</p>
+
+<p>В секции модулей рисуем как в мануале, только <strong>installer</strong> пока ставлю <strong>false</strong>, сначала надо разобраться чего это за зверь, мне ещё с табличками и префиксами разобраться надо, а то нарисует чего попало в базу...</p>
+
+<p>```php
+&lt;?php
+'rights'=>array(</p>
+
+<pre><code>'install'=&gt;false, // Enables the installer. ), 
+</code></pre>
+
+<p> ),          <br/>
+?>
+```</p>
+
+<p>Так, смотрим дальше. В конфиге по дефолту <code>'superuserName'=&gt;'Admin',</code>, а у нас юзер - <strong>admin</strong>.
+На всякий случай меняем. Секция в модулях теперь такая:</p>
+
+<p>```php
+&lt;?php
+'rights'=>array(</p>
+
+<pre><code>'install'=&gt;false, // Enables the installer. 
+'superuserName'=&gt;'admin',
+</code></pre>
+
+<p> ),          <br/>
+?>
+```</p>
+
+<p>Остальные дефолты вроде устраивают. В файле <strong>modules/rights/data/schema.sql</strong> меняем названия таблиц соответственно на <strong>rights_auth_item, rights_auth_item_child, rights_auth_assignment, rights_rights</strong> не только добавив префикс модуля, но сменив тип нотации со стиля "CaMel" для единообразия в БД. Теперь смотрим где в модуле они привязаны. Собственно упоминания есть только в файле <strong>components/RInstaller.php</strong>. Но менять ничего не надо, поскольку судя по блоку, где они упоминаются, инсталлер сам корректирует названия в зависимости от схемы sql. Но. Тут есть одно большое Но. Провозился почти час, пока дошло. Дело в том, что к именам таблиц привязан и родной <strong>authManager CDbAuthManager</strong> И, соответственно, кроме того, что мы меняем имена таблиц в SQL файле, их надо ещё указать в компоненте authManager. И последний штрих - надо назначить роль по умолчанию для незалогиненых пользователей <code>'defaultRoles'=&gt;array('Guest'),</code> То есть секция этого компонента должна выглядеть вот так (таблица <strong>rights</strong> - это уже детище наследника из установленного модуля):</p>
+
+<p>```php
+&lt;?php
+'authManager'=>array(</p>
+
+<pre><code>'class'=&gt;'RDbAuthManager', 
+'assignmentTable'=&gt;'rights_auth_assignment',
+'itemChildTable'=&gt;'rights_auth_item_child',
+'itemTable'=&gt;'rights_auth_item',
+'rightsTable'=&gt;'rights_rights',
+</code></pre>
+
+<p> ),
+?>
+```</p>
+
+<p>А теперь собственно никто не мешает воспользоваться инсталлером модуля. В секции модулей у модуля <strong>rights</strong> возвращаем в <strong>true</strong> свойство <strong>install</strong>:</p>
+
+<p>```php
+&lt;?php
+'rights'=>array(</p>
+
+<pre><code>'install'=&gt;true, // Enables the installer. 
+'superuserName'=&gt;'admin',
+</code></pre>
+
+<p> ),
+?>
+```</p>
+
+<p>Теперь даем в браузере команду <strong>../rights/</strong> и наслаждаемся поздравлениями об успешной установке. Проверив таблицы в БД убеждаемся, что они созданы с нужными именами. Уффф... помучился.</p>
+
+<p>Да, где-то по дороге вычитал ещё одну тонкость. Прежде чем устанавливать <strong>модуль Rights</strong> необходимо полностью установить <strong>Yii-User</strong>, авторизоваться под админом и только после этого ставить <strong>rights</strong>. Иначе возникнут дополнительные проблемы. У меня это "на автомате" получилось, а народ мучается...</p>
+
+<p>Теперь в конфиге надо отключить инсталлер выставив <strong>false</strong> уже лениво писать где :-)</p>
+
+<p>Но с окончательной установкой модуля ещё не всё. Во первых есть генератор разрешений для всех контроллеров (это по идеологии RBAC <strong>задачи, tasks</strong> ) и всех действий внутри контроллеров отдельно ( <strong>операции</strong> по RBAC) разрешение на которые можно присвоить любой роли или любому пользователю. Ну это постепенно буду соображать кому, что и зачем. А вот как поизящнее делать видимым элемент на вьюшке в зависимости от роли, надо будет решать уже скоро.</p>
+
+<p>Для включения нового функционала - фильтров построенных на базе rights,  осталось только унаследовать стандартный контроллер приложения не от CController, а от RController и в контроллерах можно использовать функции фильтров rights примерно так:</p>
+
+<p>```php
+&lt;?php
+public function filters() {</p>
+
+<pre><code>return array( 'rights', ); 
+</code></pre>
+
+<p>}
+ublic function allowedActions() {</p>
+
+<pre><code>return 'index, suggestedTags'; 
+</code></pre>
+
+<p>}
+?>
+```</p>
+
+<p><strong>allowedActions</strong> - перечисление действий, которые будут доступны всем и всегда вне зависимости от установленных прав.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JCFYii 3. Bootstrap]]></title>
+    <link href="http://AngryGantz.github.com/blog/2012/12/03/jcfyii-3/"/>
+    <updated>2012-12-03T09:00:00+06:00</updated>
+    <id>http://AngryGantz.github.com/blog/2012/12/03/jcfyii-3</id>
+    <content type="html"><![CDATA[<p>Ну а куда сегодня без него? :-) Уж слишком полезная и удобная вещь. Однозначно буду использовать.
+Вот только вопрос как и в каком виде? На офф сайте несколько вроде как приятных расширений, которые упрощают работу с бутстрапом в рамках Yii - и оболочки для виджетов и шаблоны генератора кода для Gii и вообще много полезного...</p>
+
+<!-- more -->
+
+
+<p>Но есть одно большое "Но". Если модули управления пользователями практически законченный продукт, где вобщем то и добавлять нечего, разве что баги править, то бутстрап - штука быстро меняющаяся и развивающаяся. С другой стороны разработчики расширений сегодня тут, а завтра кто знает... Уже сейчас там видно отставание приличное по поддерживаемым версиям, а что будет завтра? Как то ненадежно привязывать себя к такому продукту. Ну разве что подхватывать флаг разработки, когда это самое расширение безнадежно устареет.
+А для этого и куча времени нужна и неслабое знание Yii, которого по понятным причинам нет, да и будет ли ещё бабушка надвое сказала...</p>
+
+<p>С другой стороны дружить bootstrap с незнакомым фрэймворком... Столько подводных камней словить можно, что мама не горюй. Опять же скорость разработки несмотря на то, что проект неспешный, штука нужная и важная, особенно если Yii займёт свою нишу как инструмент разработки уже для реальных проектов.
+Прямо Витязь на распутье - На лево пойдёшь, по голове получишь, направо -тоже. Прямо - та же судьба. А стоять останешся, прямо у камня и настучат.</p>
+
+<p>Ладно. Может и не прекратят поддержку расширений, может и флаг подхвачу может... Вобщем пробуем расширение.
+<a href="http://www.cniska.net/yii-bootstrap/">Вот это</a>. А там будем посмотреть.</p>
+
+<p>Сгенерированное приложение использует CSS Фрэймворк Blueprint (тоже кстати штука приятная, но бутстрап на мой взгляд гораздо интереснее. Значит надо избавиться от блюпринта и "перевестись" на бутстрап.
+Иначе будет такая мешанина из CSS, что не дай то господи.</p>
+
+<p>В папке CSS 3 блюпринтовских файла - <strong>screen, print, ie</strong>. Поступим радикально, просто их удалим нафиг.
+<strong>form</strong> и <strong>main</strong> пусть пока живут, дальше видно будет что с ними и как.</p>
+
+<p>Внешних проявлений после удаления немного - только на всё окно сайт раскрылся.</p>
+
+<p>Приступаю к установке расширения. Всё по мануалу, ничего сложного. В секции <strong>preload</strong> уже болтается <strong>log</strong>. Просто добавляем туда bootstrap:</p>
+
+<p><code>php
+&lt;?php
+'preload'=&gt;array('log','bootstrap'),
+?&gt;
+</code></p>
+
+<p>Дополняем секцию с <strong>gii</strong> и получаем</p>
+
+<p>```php
+&lt;?php</p>
+
+<pre><code>    'gii'=&gt;array(
+        'class'=&gt;'system.gii.GiiModule',
+        'password'=&gt;'12345',
+        // If removed, Gii defaults to localhost only. Edit carefully to taste.
+        'ipFilters'=&gt;array('127.0.0.10','::1'),
+                    'generatorPaths'=&gt;array(
+                            'bootstrap.gii',                    
+                    )    
+    ),
+</code></pre>
+
+<p>?>
+```</p>
+
+<p>Осталось только прописать в компонентах:</p>
+
+<p>```php
+&lt;?php
+'bootstrap'=>array(</p>
+
+<pre><code>    'class'=&gt;'ext.bootstrap.components.Bootstrap', // assuming you extracted bootstrap under extensions
+</code></pre>
+
+<p> ),
+?>
+```</p>
+
+<p>А конфиг всё растёт и растёт -) Но это пока не всё. Если уж связались с bootstrap, то лучше и LESS под рукой иметь. Ставим до кучи к botstrap ещё <a href="http://www.yiiframework.com/extension/less">вот это расширение</a>
+Ну тут ставится за 1 минуту, писать нечего уже. Принцип конфига понятен, процесс инсталляции на страничке с расширением описан...</p>
+
+<p>Вот теперь всё с установкой.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JCFYii 2. Выбор структуры и первичная настройка]]></title>
+    <link href="http://AngryGantz.github.com/blog/2012/12/03/jcfyii-2/"/>
+    <updated>2012-12-03T02:20:00+06:00</updated>
+    <id>http://AngryGantz.github.com/blog/2012/12/03/jcfyii-2</id>
+    <content type="html"><![CDATA[Liquid error: invalid byte sequence in UTF-8]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JCFYii 1. Описание]]></title>
+    <link href="http://AngryGantz.github.com/blog/2012/12/03/new-post/"/>
+    <updated>2012-12-03T01:05:00+06:00</updated>
+    <id>http://AngryGantz.github.com/blog/2012/12/03/new-post</id>
+    <content type="html"><![CDATA[<p>Вряд ли кого-то может заинтересовать то, что здесь есть и будет в ближайшее время.
+Просто я начал разбираться с новым для меня фрэймворком - yii и гитхаб использую в качестве некоего дневника
+сиих изысканий.  В качестве эксперимента решено попытаться воплотить на yii проект регионального сайта вендора.</p>
+
+<!--more-->
+
+
+<p>Основные задачи, которые на 1 этапе строительства должны быть воплощены:</p>
+
+<ul>
+<li>Каталог продукции с категориями.</li>
+<li>Регистрация партнеров с подтверждением регистрации "ручками"</li>
+<li>Показ партнерских цен на продукты зарегистрированным партнерам.</li>
+<li>Возможность заказа продуктов онлайн, заказ отправляется на почту менеджеру, "ведущему" данного клиента</li>
+<li>Отслеживание истории заказов как менеджерами, так и клиентами.</li>
+<li>Импорт XML файла для обновления цен и доступности продуктов.</li>
+</ul>
+
+
+<p>Подзадача. Минимум "кулубники, выращенной своими руками", максимум использования готовых расширений для yii,
+но каталог продуктов - самостийный, ибо практика показывает что это как раз лучше делать свойское, так как это то, в чём потом больше всего копаться, а в своём коде разбираться проще, чем в чужом.</p>
+
+<p>Сверхзадача. Создание готового приложения в кратчайшие сроки в данном проекте не стоит. Важнее сохранить чистоту концепций фрэймворка (попытавшись их понять) и подробнейше задокументировать каждый шаг, даже самый очевидный.  Вобщем хочется получить на выходе красивое (с точки зрения кода в первую очередь) не сильно навороченное приложение и к нему дневник нудного ботаника.</p>
+]]></content>
+  </entry>
+  
+</feed>

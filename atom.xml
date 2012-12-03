@@ -4,7 +4,7 @@
   <title><![CDATA[AngryGantz]]></title>
   <link href="http://AngryGantz.github.com/atom.xml" rel="self"/>
   <link href="http://AngryGantz.github.com/"/>
-  <updated>2012-12-03T00:34:19+06:00</updated>
+  <updated>2012-12-03T18:38:00+06:00</updated>
   <id>http://AngryGantz.github.com/</id>
   <author>
     <name><![CDATA[AngryGantz]]></name>
@@ -12,5 +12,789 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[JCFYii 5. Дизайн-макет]]></title>
+    <link href="http://AngryGantz.github.com/blog/2012/12/03/jcfyii-5/"/>
+    <updated>2012-12-03T18:24:00+06:00</updated>
+    <id>http://AngryGantz.github.com/blog/2012/12/03/jcfyii-5</id>
+    <content type="html"><![CDATA[<p>Надо поднастроить <strong>main.css</strong>. Во первых дать отступ body на ширину меню, во вторых убрать border. Пусть страничка беленькая будет. Получаем вот такой код css для трех важных для этого элементов:</p>
+
+<!-- more -->
+
+
+<h3>main.css</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="nt">body</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">padding</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">color</span><span class="o">:</span> <span class="m">#555</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">font</span><span class="o">:</span> <span class="k">normal</span> <span class="m">10pt</span> <span class="n">Arial</span><span class="o">,</span><span class="n">Helvetica</span><span class="o">,</span><span class="k">sans-serif</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">background</span><span class="o">:</span> <span class="m">#EFEFEF</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nf">#page</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="k">margin-top</span><span class="o">:</span> <span class="m">40px</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">background</span><span class="o">:</span> <span class="nb">white</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nf">#header</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">padding</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Впрочем, Header нам сейчас не нужен. Разве что крошки туда загнать. Так и делаем. Вот от этого беленьекого листа с симпатишной менюшкой и будем плясать.</p>
+
+<p>Крошки загоняем в Header и меняем виджет на bootstrap:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">breadcrumbs</span><span class="p">))</span><span class="o">:</span>
+</span><span class='line'>  <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">widget</span><span class="p">(</span><span class="s1">&#39;bootstrap.widgets.TbBreadcrumbs&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
+</span><span class='line'>      <span class="s1">&#39;links&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">breadcrumbs</span><span class="p">,</span>
+</span><span class='line'>  <span class="p">));</span>
+</span><span class='line'><span class="k">endif</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Мои благие намерения не лезть в модули канули в лето. Но уж больно мне не понравился дизайн вьюшек Yii-User. Полностью переделал все вьюшки в &#8220;bootrap-style&#8221; Постараюсь хотя бы логику не трогать. В этом вроде как необходимости нет слава богу.</p>
+
+<p>Итак, готовый скелет с работающей системой управления пользователями на основе ролей можно считать есть.
+По хорошему конечно потестировать бы с недельку уже на этом этапе, но не в продакшен сайи идёт, пока так, баловство. Так что этот этап пропустим пока. Хотя потом надо будет заняться вопросами тестирования приложений на yii всерьёз. Как никак это чуть ли не половина работы на нормальном проекте.</p>
+
+<h2>Меню</h2>
+
+<p>Может я не понимаю своего счастья, но виджет CMenu меня не впечатлил. Будем делать меню на любимом Bootstrap
+И кстати есть желание поделить лайоут main на несколько файлов для наглядности. В частности меню рисовать в отдельном файле, вызывамом из главного. Обзовём _menu.php и приступим.</p>
+
+<p>Старое загоним в файл _cmenu, на всякий случай. И оба файлика положим в созданную папку <strong>layouts/add</strong>
+из лайоута <strong>main</strong> меню будем подтягивать кодом <code>&lt;?php require_once '/add/_cmenu.php'; ?&gt;</code></p>
+
+<p>Беру из документации пример менюшки, загоняю в <strong>_menu.php</strong> и смотрю что получилось -)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">widget</span><span class="p">(</span><span class="s1">&#39;bootstrap.widgets.TbNavbar&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span>
+</span><span class='line'>    <span class="s1">&#39;type&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;inverse&#39;</span><span class="p">,</span> <span class="c1">// null or &#39;inverse&#39;</span>
+</span><span class='line'>    <span class="s1">&#39;brand&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;Project name&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s1">&#39;brandUrl&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;#&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s1">&#39;collapse&#39;</span><span class="o">=&gt;</span><span class="k">true</span><span class="p">,</span> <span class="c1">// requires bootstrap-responsive.css</span>
+</span><span class='line'>    <span class="s1">&#39;items&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>        <span class="k">array</span><span class="p">(</span>
+</span><span class='line'>            <span class="s1">&#39;class&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;bootstrap.widgets.TbMenu&#39;</span><span class="p">,</span>
+</span><span class='line'>            <span class="s1">&#39;items&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>                <span class="k">array</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;Home&#39;</span><span class="p">,</span> <span class="s1">&#39;url&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;#&#39;</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="o">=&gt;</span><span class="k">true</span><span class="p">),</span>
+</span><span class='line'>                <span class="k">array</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;Link&#39;</span><span class="p">,</span> <span class="s1">&#39;url&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;#&#39;</span><span class="p">),</span>
+</span><span class='line'>                <span class="k">array</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;Dropdown&#39;</span><span class="p">,</span> <span class="s1">&#39;url&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;#&#39;</span><span class="p">,</span> <span class="s1">&#39;items&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>                    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;Action&#39;</span><span class="p">,</span> <span class="s1">&#39;url&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;#&#39;</span><span class="p">),</span>
+</span><span class='line'>                    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;Another action&#39;</span><span class="p">,</span> <span class="s1">&#39;url&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;#&#39;</span><span class="p">),</span>
+</span><span class='line'>                    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;Something else here&#39;</span><span class="p">,</span> <span class="s1">&#39;url&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;#&#39;</span><span class="p">),</span>
+</span><span class='line'>                    <span class="s1">&#39;---&#39;</span><span class="p">,</span>
+</span><span class='line'>                    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;NAV HEADER&#39;</span><span class="p">),</span>
+</span><span class='line'>                    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;Separated link&#39;</span><span class="p">,</span> <span class="s1">&#39;url&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;#&#39;</span><span class="p">),</span>
+</span><span class='line'>                    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;One more separated link&#39;</span><span class="p">,</span> <span class="s1">&#39;url&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;#&#39;</span><span class="p">),</span>
+</span><span class='line'>                <span class="p">)),</span>
+</span><span class='line'>            <span class="p">),</span>
+</span><span class='line'>        <span class="p">),</span>
+</span><span class='line'>        <span class="s1">&#39;&lt;form class=&quot;navbar-search pull-left&quot; action=&quot;&quot;&gt;&lt;input type=&quot;text&quot; class=&quot;search-query span2&quot; placeholder=&quot;Search&quot;&gt;&lt;/form&gt;&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="k">array</span><span class="p">(</span>
+</span><span class='line'>            <span class="s1">&#39;class&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;bootstrap.widgets.TbMenu&#39;</span><span class="p">,</span>
+</span><span class='line'>            <span class="s1">&#39;htmlOptions&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;class&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;pull-right&#39;</span><span class="p">),</span>
+</span><span class='line'>            <span class="s1">&#39;items&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>                <span class="k">array</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;Link&#39;</span><span class="p">,</span> <span class="s1">&#39;url&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;#&#39;</span><span class="p">),</span>
+</span><span class='line'>                <span class="s1">&#39;---&#39;</span><span class="p">,</span>
+</span><span class='line'>                <span class="k">array</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;Dropdown&#39;</span><span class="p">,</span> <span class="s1">&#39;url&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;#&#39;</span><span class="p">,</span> <span class="s1">&#39;items&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>                    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;Action&#39;</span><span class="p">,</span> <span class="s1">&#39;url&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;#&#39;</span><span class="p">),</span>
+</span><span class='line'>                    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;Another action&#39;</span><span class="p">,</span> <span class="s1">&#39;url&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;#&#39;</span><span class="p">),</span>
+</span><span class='line'>                    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;Something else here&#39;</span><span class="p">,</span> <span class="s1">&#39;url&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;#&#39;</span><span class="p">),</span>
+</span><span class='line'>                    <span class="s1">&#39;---&#39;</span><span class="p">,</span>
+</span><span class='line'>                    <span class="k">array</span><span class="p">(</span><span class="s1">&#39;label&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;Separated link&#39;</span><span class="p">,</span> <span class="s1">&#39;url&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;#&#39;</span><span class="p">),</span>
+</span><span class='line'>                <span class="p">)),</span>
+</span><span class='line'>            <span class="p">),</span>
+</span><span class='line'>        <span class="p">),</span>
+</span><span class='line'>    <span class="p">),</span>
+</span><span class='line'><span class="p">));</span> <span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ошибок в консоли не видно, всё работает. Осталось донастроить и меню готово :-). Симпатишное, функциональное, красявое, за что и люблю bootstrap. Сайт будем делать светлым и менюшку тоже. Так что первым делом убираю инверсию.</p>
+
+<p>Делее правим строчку <code>'brandUrl'=&gt;'index'</code> - Это будет вместо кнопочки <strong>Home</strong>, которую выкидываем. Далее меняем label=>link на Label=>Каталог, оставляя пока Урл пустым, это на будущее. Далее будут Контакты, куда же без них.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JCFYii 4 Управление пользователями и правами.]]></title>
+    <link href="http://AngryGantz.github.com/blog/2012/12/03/jcfyii-4/"/>
+    <updated>2012-12-03T11:13:00+06:00</updated>
+    <id>http://AngryGantz.github.com/blog/2012/12/03/jcfyii-4</id>
+    <content type="html"><![CDATA[<p>Что нужно практически в любом web-приложении? Что бы мы не делали, практически всегда необходима система управления пользователями и их правами. Только совсем простейшие проекты обходятся без этого. Поэтому до перехода ко всему остальному надо прикрутить что-то такое к проекту.</p>
+
+<p>В Yii реализована схема управления правами RBAC, есть готовые менеджеры авторизации пользователей (для БД и файла). Чудненько. Но мы ещё упростим себе жизнь и не будем отписывать реализацию, а воспользуемся чем нибудь готовым. Как сказано в одном хорошем кино «всё уже покрадено до нас». Написано как правило тоже. Так что вперед, на офф сайт за нужными плюшками.</p>
+
+<!-- more -->
+
+
+<p>В разделе дополнений на офф сайте полно всякого разного по управлению пользователями и правами. Смотреть их все ни желания ни времени. Положимся на мнение общественности, рекомендующей Yii-User и Rights.</p>
+
+<h2>Yii-User</h2>
+
+<p><a href="http://www.yiiframework.com/extension/yii-user/">Страничка на оффсайте Yii</a></p>
+
+<p><a href="http://yii-user.2mx.org/">Домашняя страничка</a></p>
+
+<p>По описанию делает всё, что надо и не делает лишнего. Возможно не зря хвалили.
+Качаю, создаю папку <code>/protected/modules</code> , Папку <code>User</code> из архива кидаю туда.</p>
+
+<p>Далее всё включаем по мануалу в главном конфиге:</p>
+
+<p>В секцию <strong>import</strong> добавлено:</p>
+
+<pre><code>'application.models.*',
+'application.components.*',
+'application.modules.user.models.*',
+'application.modules.user.components.*',
+</code></pre>
+
+<ul>
+<li>В секцию <strong>modules</strong> после gii добавлено <code>user,</code></li>
+<li>В секции <strong>components</strong> уже прописан компонент <strong>user</strong>. Это демо-компонент, сгенерированный приложением.  Меняю на то, что в мануале по модулю:</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="s1">&#39;user&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>  <span class="c1">// enable cookie-based authentication</span>
+</span><span class='line'>  <span class="s1">&#39;allowAutoLogin&#39;</span><span class="o">=&gt;</span><span class="k">true</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;loginUrl&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;/user/login&#39;</span><span class="p">),</span>
+</span><span class='line'><span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Заодно надо почистить хвостики от старого. Удаляем компонент <strong>UserIdentity.php</strong>, из контроллера <strong>SiteController.php</strong> удаляем действия <strong>actionLogin()</strong> и <strong>actionLogout()</strong>, ибо использоваться будет модуль.  Так же удаляется полностью модель <strong>LoginForm.php</strong> и вьюшка <strong>site/login.php</strong>. Вроде всё. Идём дальше.</p>
+
+<ul>
+<li>Создание таблиц БД. Смотрим <strong>modules/user/data/schema.mysql.sql</strong> Там создание трёх таблиц и занесение пары аккаунтов - admin и demo. Вот только префиксы&#8230; Ну не люблю я эти «tbl_». Буду делать префиксы помодульно. Будет более менее осмысленно, когда (и если) проект разрастется. Меняю «tbl_» на «user_» и выполняю скрипт в MySQL. Но ведь очевидно, где-то была привязка к этим «tbl_». Начнем с файла модуля <strong>modules/user/UserModule.php</strong>. Нахожу вот такие строки:</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'>  <span class="k">public</span> <span class="nv">$tableUsers</span> <span class="o">=</span> <span class="s1">&#39;{ {users} }&#39;</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">public</span> <span class="nv">$tableProfiles</span> <span class="o">=</span> <span class="s1">&#39;{ {profiles} }&#39;</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">public</span> <span class="nv">$tableProfileFields</span> <span class="o">=</span> <span class="s1">&#39;{ {profiles_fields} }&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Это даже не привязка к «tbl_». Даже не знаю, как понимать. Может это связано с настройкой модуля из консоли через миграции? Что-такое читал. Ну да бог с ним. В любом случае это паблик свойства и их можно переопределить прямо в глобальном конфиге приложения, в секции модуля <strong>user</strong>. Топаем в <strong>config/main.php</strong> и меняем сиротливую строку <code>user,</code> на секцию</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="s1">&#39;user&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>  <span class="s1">&#39;tableUsers&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;user_users&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;tableProfiles&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;user_profiles&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;tableProfileFields&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;user_profiles_fields&#39;</span><span class="p">,</span>
+</span><span class='line'><span class="p">),</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Ну и последнее. Прописать эти все радости в меню. Меню нарисовано в <strong>view/layouts/main.php</strong> Выбрасываю оттуда неактуальные <strong>Login</strong> и <strong>Logout</strong> и особо не всматриваясь копипастом из мануала загоняю туда блок</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="k">array</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="o">=&gt;</span><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getModule</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">loginUrl</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;label&#39;</span><span class="o">=&gt;</span><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getModule</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">t</span><span class="p">(</span><span class="s2">&quot;Login&quot;</span><span class="p">),</span> <span class="s1">&#39;visible&#39;</span><span class="o">=&gt;</span><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">user</span><span class="o">-&gt;</span><span class="na">isGuest</span><span class="p">),</span>
+</span><span class='line'><span class="k">array</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="o">=&gt;</span><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getModule</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">registrationUrl</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;label&#39;</span><span class="o">=&gt;</span><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getModule</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">t</span><span class="p">(</span><span class="s2">&quot;Register&quot;</span><span class="p">),</span> <span class="s1">&#39;visible&#39;</span><span class="o">=&gt;</span><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">user</span><span class="o">-&gt;</span><span class="na">isGuest</span><span class="p">),</span>
+</span><span class='line'><span class="k">array</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="o">=&gt;</span><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getModule</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">profileUrl</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;label&#39;</span><span class="o">=&gt;</span><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getModule</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">t</span><span class="p">(</span><span class="s2">&quot;Profile&quot;</span><span class="p">),</span> <span class="s1">&#39;visible&#39;</span><span class="o">=&gt;!</span><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">user</span><span class="o">-&gt;</span><span class="na">isGuest</span><span class="p">),</span>
+</span><span class='line'><span class="k">array</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="o">=&gt;</span><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getModule</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">logoutUrl</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;label&#39;</span><span class="o">=&gt;</span><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getModule</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">t</span><span class="p">(</span><span class="s2">&quot;Logout&quot;</span><span class="p">)</span><span class="o">.</span><span class="s1">&#39; (&#39;</span><span class="o">.</span><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">user</span><span class="o">-&gt;</span><span class="na">name</span><span class="o">.</span><span class="s1">&#39;)&#39;</span><span class="p">,</span>
+</span><span class='line'><span class="s1">&#39;visible&#39;</span><span class="o">=&gt;!</span><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">user</span><span class="o">-&gt;</span><span class="na">isGuest</span><span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Проверяем модуль. Ссылки меню, регистрация, логин-логаут, всё работает. Приятно. Да, всё конечно англицкое, придется с этим всем повозиться потом. Причём чует моё сердце писсимиста, что если делать интернационализацию &#8220;по фен-шую&#8221; то повозиться придется долго. В идеале даже во вьюшках текста прямого быть не должно, только вызовы мессаджей. Но боюсь, что на этот мазохизм меня всё таки не хватит. Хотя&#8230; Пишу же эти простыни, кто знает&#8230; :-)</p>
+
+<p>Но главное, модуль работает, логика своё отрабатывает, а внешний вид и языки потом. Сначала строим логику.</p>
+
+<h2>Модуль RIGHTS</h2>
+
+<p><a href="http://www.yiiframework.com/extension/rights">Страничка на оффсайте</a>
+Это модуль управления правами пользователей. Зачем он мне нужен? Ну как минимум у меня предполагается Гость, Админ, Клиент (дилер) и Менеджер. В дальнейшем возможно ещё розничные клиенты, какой нибудь старший менеджер и так далее и тому подобное. В Yii реализована система управления правами RBAC. <a href="http://yiiframework.ru/doc/guide/ru/topics.auth">Подробности тут</a>. Rights вроде как предоставляет полный инструментарий для управления и использования этой системы. То, что бегло прочитал, понравилось. Вопрос на сколько это удобно и как этот модуль &#8220;сработается&#8221; с предыдущим установленным - Yii-User. Начнем.</p>
+
+<h3>Установка.</h3>
+
+<p>Скачиваю мануальчик и сам модуль. Папку <strong>rights</strong> из архива кидаем в модули и читаем мануальчик.
+Так. Первое. В требованиях наличие БД (ну это понятно) и наличие модели <strong>user</strong> с атрибутами <strong>id</strong> и <strong>name</strong>. В нашей табличке <strong>user_users</strong> поле <strong>id</strong> есть, а вот вместо поля <strong>name</strong> имеем <strong>username</strong>. Но пролистав документацию в разделе конфигурации вижу <code>'userNameColumn'=&gt;'username',</code> причём это по дефолту, даже менять ничего не надо. Возвращаюсь к инсталляции модуля. Первое стандартно - импорт.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="s1">&#39;import&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>  <span class="s1">&#39;application.modules.rights.*&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;application.modules.rights.components.*&#39;</span><span class="p">,</span> <span class="c1">// Correct paths if necessary. </span>
+</span><span class='line'><span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>А вот дальше интересно:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="s1">&#39;components&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>  <span class="s1">&#39;user&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>      <span class="s1">&#39;class&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;RWebUser&#39;</span><span class="p">,</span> <span class="c1">// Allows super users access implicitly. </span>
+</span><span class='line'>  <span class="p">),</span>
+</span><span class='line'><span class="s1">&#39;authManager&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>      <span class="s1">&#39;class&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;RDbAuthManager&#39;</span><span class="p">,</span> <span class="c1">// Provides support authorization item sorting. </span>
+</span><span class='line'>  <span class="p">),</span>
+</span><span class='line'><span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>С менеджером аутентификации всё ясно - подключаем менеджера, работающего через БД. А вот <strong>user</strong>&#8230;
+Гложат меня смутные сомнения что не всё гладко будет&#8230; Надеюсь зря.
+Делаем и продолжаем. Просто добавляем в секцию <strong>user</strong> компонентов (<strong>и не путать с аналогичной секцией в модулях!</strong>) строку с определением класса. Пока до выяснения получится вот что:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="s1">&#39;user&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>      <span class="s1">&#39;class&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;RWebUser&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="c1">// enable cookie-based authentication</span>
+</span><span class='line'>      <span class="s1">&#39;allowAutoLogin&#39;</span><span class="o">=&gt;</span><span class="k">true</span><span class="p">,</span>
+</span><span class='line'>      <span class="s1">&#39;loginUrl&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;/user/login&#39;</span><span class="p">),</span>
+</span><span class='line'><span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>В секции модулей рисуем как в мануале, только <strong>installer</strong> пока ставлю <strong>false</strong>, сначала надо разобраться чего это за зверь, мне ещё с табличками и префиксами разобраться надо, а то нарисует чего попало в базу&#8230;</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="s1">&#39;rights&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>  <span class="s1">&#39;install&#39;</span><span class="o">=&gt;</span><span class="k">false</span><span class="p">,</span> <span class="c1">// Enables the installer. ), </span>
+</span><span class='line'> <span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Так, смотрим дальше. В конфиге по дефолту <code>'superuserName'=&gt;'Admin',</code>, а у нас юзер - <strong>admin</strong>.
+На всякий случай меняем. Секция в модулях теперь такая:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="s1">&#39;rights&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>  <span class="s1">&#39;install&#39;</span><span class="o">=&gt;</span><span class="k">false</span><span class="p">,</span> <span class="c1">// Enables the installer. </span>
+</span><span class='line'>  <span class="s1">&#39;superuserName&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span>
+</span><span class='line'> <span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Остальные дефолты вроде устраивают. В файле <strong>modules/rights/data/schema.sql</strong> меняем названия таблиц соответственно на <strong>rights_auth_item, rights_auth_item_child, rights_auth_assignment, rights_rights</strong> не только добавив префикс модуля, но сменив тип нотации со стиля &#8220;CaMel&#8221; для единообразия в БД. Теперь смотрим где в модуле они привязаны. Собственно упоминания есть только в файле <strong>components/RInstaller.php</strong>. Но менять ничего не надо, поскольку судя по блоку, где они упоминаются, инсталлер сам корректирует названия в зависимости от схемы sql. Но. Тут есть одно большое Но. Провозился почти час, пока дошло. Дело в том, что к именам таблиц привязан и родной <strong>authManager CDbAuthManager</strong> И, соответственно, кроме того, что мы меняем имена таблиц в SQL файле, их надо ещё указать в компоненте authManager. И последний штрих - надо назначить роль по умолчанию для незалогиненых пользователей <code>'defaultRoles'=&gt;array('Guest'),</code> То есть секция этого компонента должна выглядеть вот так (таблица <strong>rights</strong> - это уже детище наследника из установленного модуля):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="s1">&#39;authManager&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>  <span class="s1">&#39;class&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;RDbAuthManager&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;assignmentTable&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;rights_auth_assignment&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;itemChildTable&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;rights_auth_item_child&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;itemTable&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;rights_auth_item&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;rightsTable&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;rights_rights&#39;</span><span class="p">,</span>
+</span><span class='line'> <span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>А теперь собственно никто не мешает воспользоваться инсталлером модуля. В секции модулей у модуля <strong>rights</strong> возвращаем в <strong>true</strong> свойство <strong>install</strong>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="s1">&#39;rights&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>  <span class="s1">&#39;install&#39;</span><span class="o">=&gt;</span><span class="k">true</span><span class="p">,</span> <span class="c1">// Enables the installer. </span>
+</span><span class='line'>  <span class="s1">&#39;superuserName&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span>
+</span><span class='line'>  
+</span><span class='line'> <span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Теперь даем в браузере команду <strong>../rights/</strong> и наслаждаемся поздравлениями об успешной установке. Проверив таблицы в БД убеждаемся, что они созданы с нужными именами. Уффф&#8230; помучился.</p>
+
+<p>Да, где-то по дороге вычитал ещё одну тонкость. Прежде чем устанавливать <strong>модуль Rights</strong> необходимо полностью установить <strong>Yii-User</strong>, авторизоваться под админом и только после этого ставить <strong>rights</strong>. Иначе возникнут дополнительные проблемы. У меня это &#8220;на автомате&#8221; получилось, а народ мучается&#8230;</p>
+
+<p>Теперь в конфиге надо отключить инсталлер выставив <strong>false</strong> уже лениво писать где :-)</p>
+
+<p>Но с окончательной установкой модуля ещё не всё. Во первых есть генератор разрешений для всех контроллеров (это по идеологии RBAC <strong>задачи, tasks</strong> ) и всех действий внутри контроллеров отдельно ( <strong>операции</strong> по RBAC) разрешение на которые можно присвоить любой роли или любому пользователю. Ну это постепенно буду соображать кому, что и зачем. А вот как поизящнее делать видимым элемент на вьюшке в зависимости от роли, надо будет решать уже скоро.</p>
+
+<p>Для включения нового функционала - фильтров построенных на базе rights,  осталось только унаследовать стандартный контроллер приложения не от CController, а от RController и в контроллерах можно использовать функции фильтров rights примерно так:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">filters</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">array</span><span class="p">(</span> <span class="s1">&#39;rights&#39;</span><span class="p">,</span> <span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nx">ublic</span> <span class="k">function</span> <span class="nf">allowedActions</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="s1">&#39;index, suggestedTags&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>allowedActions</strong> - перечисление действий, которые будут доступны всем и всегда вне зависимости от установленных прав.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JCFYii 3. Bootstrap]]></title>
+    <link href="http://AngryGantz.github.com/blog/2012/12/03/jcfyii-3/"/>
+    <updated>2012-12-03T09:00:00+06:00</updated>
+    <id>http://AngryGantz.github.com/blog/2012/12/03/jcfyii-3</id>
+    <content type="html"><![CDATA[<p>Ну а куда сегодня без него? :-) Уж слишком полезная и удобная вещь. Однозначно буду использовать.
+Вот только вопрос как и в каком виде? На офф сайте несколько вроде как приятных расширений, которые упрощают работу с бутстрапом в рамках Yii - и оболочки для виджетов и шаблоны генератора кода для Gii и вообще много полезного&#8230;</p>
+
+<!-- more -->
+
+
+<p>Но есть одно большое &#8220;Но&#8221;. Если модули управления пользователями практически законченный продукт, где вобщем то и добавлять нечего, разве что баги править, то бутстрап - штука быстро меняющаяся и развивающаяся. С другой стороны разработчики расширений сегодня тут, а завтра кто знает&#8230; Уже сейчас там видно отставание приличное по поддерживаемым версиям, а что будет завтра? Как то ненадежно привязывать себя к такому продукту. Ну разве что подхватывать флаг разработки, когда это самое расширение безнадежно устареет.
+А для этого и куча времени нужна и неслабое знание Yii, которого по понятным причинам нет, да и будет ли ещё бабушка надвое сказала&#8230;</p>
+
+<p>С другой стороны дружить bootstrap с незнакомым фрэймворком&#8230; Столько подводных камней словить можно, что мама не горюй. Опять же скорость разработки несмотря на то, что проект неспешный, штука нужная и важная, особенно если Yii займёт свою нишу как инструмент разработки уже для реальных проектов.
+Прямо Витязь на распутье - На лево пойдёшь, по голове получишь, направо -тоже. Прямо - та же судьба. А стоять останешся, прямо у камня и настучат.</p>
+
+<p>Ладно. Может и не прекратят поддержку расширений, может и флаг подхвачу может&#8230; Вобщем пробуем расширение.
+<a href="http://www.cniska.net/yii-bootstrap/">Вот это</a>. А там будем посмотреть.</p>
+
+<p>Сгенерированное приложение использует CSS Фрэймворк Blueprint (тоже кстати штука приятная, но бутстрап на мой взгляд гораздо интереснее. Значит надо избавиться от блюпринта и &#8220;перевестись&#8221; на бутстрап.
+Иначе будет такая мешанина из CSS, что не дай то господи.</p>
+
+<p>В папке CSS 3 блюпринтовских файла - <strong>screen, print, ie</strong>. Поступим радикально, просто их удалим нафиг.
+<strong>form</strong> и <strong>main</strong> пусть пока живут, дальше видно будет что с ними и как.</p>
+
+<p>Внешних проявлений после удаления немного - только на всё окно сайт раскрылся.</p>
+
+<p>Приступаю к установке расширения. Всё по мануалу, ничего сложного. В секции <strong>preload</strong> уже болтается <strong>log</strong>. Просто добавляем туда bootstrap:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="s1">&#39;preload&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">,</span><span class="s1">&#39;bootstrap&#39;</span><span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Дополняем секцию с <strong>gii</strong> и получаем</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'>      <span class="s1">&#39;gii&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>          <span class="s1">&#39;class&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;system.gii.GiiModule&#39;</span><span class="p">,</span>
+</span><span class='line'>          <span class="s1">&#39;password&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;12345&#39;</span><span class="p">,</span>
+</span><span class='line'>          <span class="c1">// If removed, Gii defaults to localhost only. Edit carefully to taste.</span>
+</span><span class='line'>          <span class="s1">&#39;ipFilters&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;127.0.0.10&#39;</span><span class="p">,</span><span class="s1">&#39;::1&#39;</span><span class="p">),</span>
+</span><span class='line'>                        <span class="s1">&#39;generatorPaths&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>                                <span class="s1">&#39;bootstrap.gii&#39;</span><span class="p">,</span>
+</span><span class='line'>                        <span class="p">)</span>
+</span><span class='line'>      <span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Осталось только прописать в компонентах:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="s1">&#39;bootstrap&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>        <span class="s1">&#39;class&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;ext.bootstrap.components.Bootstrap&#39;</span><span class="p">,</span> <span class="c1">// assuming you extracted bootstrap under extensions</span>
+</span><span class='line'> <span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>А конфиг всё растёт и растёт -) Но это пока не всё. Если уж связались с bootstrap, то лучше и LESS под рукой иметь. Ставим до кучи к botstrap ещё <a href="http://www.yiiframework.com/extension/less">вот это расширение</a>
+Ну тут ставится за 1 минуту, писать нечего уже. Принцип конфига понятен, процесс инсталляции на страничке с расширением описан&#8230;</p>
+
+<p>Вот теперь всё с установкой.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JCFYii 2. Выбор структуры и первичная настройка]]></title>
+    <link href="http://AngryGantz.github.com/blog/2012/12/03/jcfyii-2/"/>
+    <updated>2012-12-03T02:20:00+06:00</updated>
+    <id>http://AngryGantz.github.com/blog/2012/12/03/jcfyii-2</id>
+    <content type="html"><![CDATA[<p>Не тот случай, что-бы изобретать велосипеды. За базу взято стандартное приложение yii, генерируемое из консоли
+командой <code>% YiiRoot/framework/yiic webapp WebRoot/testdrive</code>.  Думаю это снимет часть проблем новичка. Хотя конечно правильнее на мой взгляд делить фронт и бэк. А тут по структуре всё вроде как в куче получается.
+Модули фронт и бэк можно использовать как вариант, но предполагается использование кучи сторонних разработок и модули юзеров, прав и т.д. - общие и при модулях фронт-бэк будет больше путаницы, чем пользы</p>
+
+<!--more-->
+
+
+<p>Попробую разделить на уровне контроллеров и вьюшек, тупо создав подпапки front и Back, в которых будут (предположительно) этакие &#8220;надконтроллеры&#8221; общего назначения, а сторонние модули надо постараться не трогать вообще, за исключением может быть вьюшек. Попытка не пытка -). Каталог собственного производства так же загоню в отдельный модуль. Причём очень хочется разделить собственно каталог от системы заказов и корзины. Пока слабо понимаю, как это сделать. Вьюшки по любому пересекутся требуя и того и другого и третьего.</p>
+
+<p>Вобщем желаний много, а как это всё сделать пока не очень понятно. Ну главное начать копать от КПП и к обеду что-нибудь прояснится.</p>
+
+<h2>Первичная настройка</h2>
+
+<h3>Куда деть фрэймворк?</h3>
+
+<p>Сам фрэймворк у меня оказался за бортом www директории. Как-то мне это не нравится. Кому как, а мне не по фен-шую. Перенес фрэймворк в <code>www/protected/lib/yii</code>
+В файле <code>www/index.php</code> поменял путь к нему:
+<code>$yii=dirname(__FILE__).'/protected/lib/yii/yii.php';</code>
+По мне так красивее, чем миллион ../../../  и т.д. Опять же, если это всё перерастет из ознакомления для души в работу, лучше сразу готовить нормальные сани, а на некоторых хостингах с папкой &#8220;за рутом&#8221; могут всякие проблемы возникнуть.</p>
+
+<h3>Подключение к БД.</h3>
+
+<p>Создал БД <code>jcat</code>.
+В файле <code>protected/config/main.php</code> раскомментил блок подключения к MySQL и настроил на базу, а подключение к лайт вырубил:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'>    <span class="c1">// ......  </span>
+</span><span class='line'>    <span class="cm">/*</span>
+</span><span class='line'><span class="cm">    &#39;db&#39;=&gt;array(</span>
+</span><span class='line'><span class="cm">        &#39;connectionString&#39; =&gt; &#39;sqlite:&#39;.dirname(__FILE__).&#39;/../data/testdrive.db&#39;,</span>
+</span><span class='line'><span class="cm">    ),</span>
+</span><span class='line'><span class="cm">    */</span>
+</span><span class='line'>    <span class="c1">// uncomment the following to use a MySQL database</span>
+</span><span class='line'>    <span class="s1">&#39;db&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>        <span class="s1">&#39;connectionString&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;mysql:host=localhost;dbname=jcat&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;emulatePrepare&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;username&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;root&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;password&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;charset&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;utf8&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Включение GII</h3>
+
+<p>Фишка yii - автоматическое создание кода CRUD - моделей, контроллеров, вьюшек на базе таблицы БД - штука приятная и полезная. В принципе в бэке можно и стандартными вьюшками обойтись, а во фронте как база.
+Вобщем оно мне надо. Включил раскомментировав в <em>config/main.php</em> соответствующую секцию и прописал в айпи фильтр адрес, на котором сайт на локале крутится и пароль.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'>   <span class="s1">&#39;gii&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>      <span class="s1">&#39;class&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;system.gii.GiiModule&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="s1">&#39;password&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;12345&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="c1">// If removed, Gii defaults to localhost only. Edit carefully to taste.</span>
+</span><span class='line'>      <span class="s1">&#39;ipFilters&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;127.0.0.10&#39;</span><span class="p">,</span><span class="s1">&#39;::1&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Включение ЧПУ</h3>
+
+<p>Ну а куда без них? Пока тоже всё просто - надо только снять комментарии с секции URLManager в том же главном файле конфигурации:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'>   <span class="c1">// uncomment the following to enable URLs in path-format</span>
+</span><span class='line'>    <span class="s1">&#39;urlManager&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>      <span class="s1">&#39;urlFormat&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="s1">&#39;rules&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>            <span class="s1">&#39;&lt;controller:\w+&gt;/&lt;id:\d+&gt;&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;&lt;controller&gt;/view&#39;</span><span class="p">,</span>
+</span><span class='line'>          <span class="s1">&#39;&lt;controller:\w+&gt;/&lt;action:\w+&gt;/&lt;id:\d+&gt;&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;&lt;controller&gt;/&lt;action&gt;&#39;</span><span class="p">,</span>
+</span><span class='line'>          <span class="s1">&#39;&lt;controller:\w+&gt;/&lt;action:\w+&gt;&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;&lt;controller&gt;/&lt;action&gt;&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="p">),</span>
+</span><span class='line'>    <span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ага. Просто. Как говорится, &#8220;ну вот, началось&#8221;. <em>index.php</em> из адреса никуда не делся. Некрасяво. Надо бы разобраться. Придётся шаманить с <em>urlManager</em> и <em>.htaccess</em>. Впрочем можно и не шаманить самому, всё уже придумано до нас. минута на гугле и есть решение. Писать дольше чем делать, но обещал себе родимому.
+Итак, всё просто. в корне создаём &#8220;.htaccess&#8221;. Туда рисуем:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'>    <span class="nx">RewriteEngine</span> <span class="nx">on</span>
+</span><span class='line'>    <span class="c1"># if a directory or a file exists, use it directly</span>
+</span><span class='line'>    <span class="nx">RewriteCond</span> <span class="o">%</span><span class="p">{</span><span class="nx">REQUEST_FILENAME</span><span class="p">}</span> <span class="o">!-</span><span class="nx">f</span>
+</span><span class='line'>    <span class="nx">RewriteCond</span> <span class="o">%</span><span class="p">{</span><span class="nx">REQUEST_FILENAME</span><span class="p">}</span> <span class="o">!-</span><span class="nx">d</span>
+</span><span class='line'>    <span class="c1"># otherwise forward it to index.php</span>
+</span><span class='line'>    <span class="nx">RewriteRule</span> <span class="o">.</span> <span class="nx">index</span><span class="o">.</span><span class="nx">php</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>а в конфиге добавляем параметр для <strong>urlManager</strong>: <code>'showScriptName' =&gt; false,</code>, то есть секция теперь выглядит так:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'>    <span class="s1">&#39;urlManager&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>      <span class="s1">&#39;urlFormat&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s1">&#39;showScriptName&#39;</span> <span class="o">=&gt;</span> <span class="k">false</span><span class="p">,</span>
+</span><span class='line'>        <span class="s1">&#39;rules&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>       <span class="s1">&#39;&lt;controller:\w+&gt;/&lt;id:\d+&gt;&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;&lt;controller&gt;/view&#39;</span><span class="p">,</span>
+</span><span class='line'>       <span class="s1">&#39;&lt;controller:\w+&gt;/&lt;action:\w+&gt;/&lt;id:\d+&gt;&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;&lt;controller&gt;/&lt;action&gt;&#39;</span><span class="p">,</span>
+</span><span class='line'>       <span class="s1">&#39;&lt;controller:\w+&gt;/&lt;action:\w+&gt;&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;&lt;controller&gt;/&lt;action&gt;&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="p">),</span>
+</span><span class='line'>    <span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Правда если переходить в меню сгенерированного приложения по ссылке <strong>&#8220;About&#8221;</strong>, в адреной строке появляется <code>http://locyii/site/page?view=about</code>, но это уже проблема менюшки, так как <code>http://locyii/site/page/view/about</code> вполне себе работает. А с меню потом. Может и меню то другое будет.</p>
+
+<p>Ну вот, начальную настройку считаю завершенной. На всё про всё ушло минут 20, это вместе с просматриванием доков на yiiframework.ru. Писал эту простыню гораздо дольше :-)</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JCFYii 1. Описание]]></title>
+    <link href="http://AngryGantz.github.com/blog/2012/12/03/new-post/"/>
+    <updated>2012-12-03T01:05:00+06:00</updated>
+    <id>http://AngryGantz.github.com/blog/2012/12/03/new-post</id>
+    <content type="html"><![CDATA[<p>Вряд ли кого-то может заинтересовать то, что здесь есть и будет в ближайшее время.
+Просто я начал разбираться с новым для меня фрэймворком - yii и гитхаб использую в качестве некоего дневника
+сиих изысканий.  В качестве эксперимента решено попытаться воплотить на yii проект регионального сайта вендора.</p>
+
+<!--more-->
+
+
+<p>Основные задачи, которые на 1 этапе строительства должны быть воплощены:</p>
+
+<ul>
+<li>Каталог продукции с категориями.</li>
+<li>Регистрация партнеров с подтверждением регистрации &#8220;ручками&#8221;</li>
+<li>Показ партнерских цен на продукты зарегистрированным партнерам.</li>
+<li>Возможность заказа продуктов онлайн, заказ отправляется на почту менеджеру, &#8220;ведущему&#8221; данного клиента</li>
+<li>Отслеживание истории заказов как менеджерами, так и клиентами.</li>
+<li>Импорт XML файла для обновления цен и доступности продуктов.</li>
+</ul>
+
+
+<p>Подзадача. Минимум &#8220;кулубники, выращенной своими руками&#8221;, максимум использования готовых расширений для yii,
+но каталог продуктов - самостийный, ибо практика показывает что это как раз лучше делать свойское, так как это то, в чём потом больше всего копаться, а в своём коде разбираться проще, чем в чужом.</p>
+
+<p>Сверхзадача. Создание готового приложения в кратчайшие сроки в данном проекте не стоит. Важнее сохранить чистоту концепций фрэймворка (попытавшись их понять) и подробнейше задокументировать каждый шаг, даже самый очевидный.  Вобщем хочется получить на выходе красивое (с точки зрения кода в первую очередь) не сильно навороченное приложение и к нему дневник нудного ботаника.</p>
+]]></content>
+  </entry>
   
 </feed>
