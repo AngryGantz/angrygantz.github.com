@@ -4,7 +4,7 @@
   <title><![CDATA[Category: JCFYii | AngryGantz]]></title>
   <link href="http://AngryGantz.github.com/blog/categories/jcfyii/atom.xml" rel="self"/>
   <link href="http://AngryGantz.github.com/"/>
-  <updated>2012-12-03T18:40:22+06:00</updated>
+  <updated>2012-12-03T20:08:54+06:00</updated>
   <id>http://AngryGantz.github.com/</id>
   <author>
     <name><![CDATA[AngryGantz]]></name>
@@ -12,6 +12,14 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[JCFYii 6. Каталог товаров]]></title>
+    <link href="http://AngryGantz.github.com/blog/2012/12/03/jcfyii-6/"/>
+    <updated>2012-12-03T19:15:00+06:00</updated>
+    <id>http://AngryGantz.github.com/blog/2012/12/03/jcfyii-6</id>
+    <content type="html"><![CDATA[Liquid error: invalid byte sequence in UTF-8]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[JCFYii 5. Дизайн-макет]]></title>
@@ -497,37 +505,6 @@ ublic function allowedActions() {</p>
     <updated>2012-12-03T02:20:00+06:00</updated>
     <id>http://AngryGantz.github.com/blog/2012/12/03/jcfyii-2</id>
     <content type="html"><![CDATA[Liquid error: invalid byte sequence in UTF-8]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[JCFYii 1. Описание]]></title>
-    <link href="http://AngryGantz.github.com/blog/2012/12/03/new-post/"/>
-    <updated>2012-12-03T01:05:00+06:00</updated>
-    <id>http://AngryGantz.github.com/blog/2012/12/03/new-post</id>
-    <content type="html"><![CDATA[<p>Вряд ли кого-то может заинтересовать то, что здесь есть и будет в ближайшее время.
-Просто я начал разбираться с новым для меня фрэймворком - yii и гитхаб использую в качестве некоего дневника
-сиих изысканий.  В качестве эксперимента решено попытаться воплотить на yii проект регионального сайта вендора.</p>
-
-<!--more-->
-
-
-<p>Основные задачи, которые на 1 этапе строительства должны быть воплощены:</p>
-
-<ul>
-<li>Каталог продукции с категориями.</li>
-<li>Регистрация партнеров с подтверждением регистрации "ручками"</li>
-<li>Показ партнерских цен на продукты зарегистрированным партнерам.</li>
-<li>Возможность заказа продуктов онлайн, заказ отправляется на почту менеджеру, "ведущему" данного клиента</li>
-<li>Отслеживание истории заказов как менеджерами, так и клиентами.</li>
-<li>Импорт XML файла для обновления цен и доступности продуктов.</li>
-</ul>
-
-
-<p>Подзадача. Минимум "кулубники, выращенной своими руками", максимум использования готовых расширений для yii,
-но каталог продуктов - самостийный, ибо практика показывает что это как раз лучше делать свойское, так как это то, в чём потом больше всего копаться, а в своём коде разбираться проще, чем в чужом.</p>
-
-<p>Сверхзадача. Создание готового приложения в кратчайшие сроки в данном проекте не стоит. Важнее сохранить чистоту концепций фрэймворка (попытавшись их понять) и подробнейше задокументировать каждый шаг, даже самый очевидный.  Вобщем хочется получить на выходе красивое (с точки зрения кода в первую очередь) не сильно навороченное приложение и к нему дневник нудного ботаника.</p>
-]]></content>
   </entry>
   
 </feed>

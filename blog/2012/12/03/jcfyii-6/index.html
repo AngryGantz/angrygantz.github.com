@@ -1,0 +1,639 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>JCFYii 6. Каталог товаров - AngryGantz</title>
+  <meta name="author" content="AngryGantz">
+
+  
+  <meta name="description" content="Так. Пора приступать к каталогу товаров. Буду делать отдельным модулем. В этот же модуль пойдёт всё, что относится к заказам. В конечном итоге У меня &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://AngryGantz.github.com/blog/2012/12/03/jcfyii-6/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="AngryGantz" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">AngryGantz</a></h1>
+  
+    <h2>Заметки вебстроителя.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:AngryGantz.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Блог</a></li>
+  <li><a href="/blog/archives">Архив</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">JCFYii 6. Каталог товаров</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-03T19:15:00+06:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Так. Пора приступать к каталогу товаров. Буду делать отдельным модулем. В этот же модуль пойдёт всё, что относится к заказам. В конечном итоге У меня будет несколько групп заказчиков и плюс менеджеры, обрабатывающие заказ. Модуль буду делать максимально автономным. В данном случае он будет работать совместно со связкой Y-ii+rights, но в принципе это не обязательно. Просто надо будет реализовать какой-то простой API связи с юзерами и ролями, желательно в одном файле. Офрмлю скорее всего в виде хелпера или отдельного класса типа &#8220;ApiToUser&#8221; где будет проверка на принадлежность к группе и выдёргивание нужных полей из модуля Yii-User типа имени пользователя и, может быть, ещё каких либо полей профайла. Таким образом можно будет добиться полной автономии модуля от всего, кроме расширения bootstrap. Но на эту зависимость иду вполне осознанно. В принципе можно конечно bootstrap засунуть прямо в модуль, но он в приложении везде использоваться будет. Вобщем если вдруг этот эксперимент нечаянно по прихоти судьбы будет нужен ещё кому-то кроме меня, он сам сможет засунуть bootstrap в модуль и получить полную автономность.</p>
+
+<!-- more -->
+
+
+<h2>Схема SQL</h2>
+
+<p>Нарисуем схемку для каталога.</p>
+
+<p> <img src="http://iscr.ru/photo/1353570781_diagsql2.jpg" alt="SQL Схема каталога" /></p>
+
+<p>Первое. Это не совсем правильная схема -) Она избыточна. Избыточна по наличию полей для фото у товаров, хотя есть отдельная таблица фото, она избыточна наличием таблицы отношений многие ко многим для связки товар-категория и при этом наличием поля в товарах с ИД &#8220;главной категории&#8221;. Она неправильна тем, что для категорий количество картинок ограничено и введено несколько полей для картинок вместо того, что-бы сделать тоже отдельную таблицу с фото для категорий&#8230; Вобщем на экзамене двойка :-) Но мне так удобнее по разным причинам. Так что, что хочу, то и делаю.</p>
+
+<p>Второе. Таблица категорий реализует схему построения дерева  &#8220;modified pre-order tree traversal algorithm&#8221;. На мой взгляд весьма эффективный метод построения деревьев, которым почти всегда пользуюсь. А тут ещё к своему удовольствию нашел расширение для Yii, работающее с этим методом.</p>
+
+<h2>Создание и подготовка модуля</h2>
+
+<p>Модуль <strong>Catalog</strong> просто создал через GII. В конфигурации добавил в секцию модулей. Теперь сразу подумаем, что потребуется для работы каталога. Во первых расширение, которое я упомянул выше для работы с деревьями категорий. Второе. В каталоге естественно будут картинки. Их надо будет ресайзить, делать превьюшки и т.д.
+Терпеть ненавижу практику, когда превьюшки картинок делают не создавая пережатый тумбнэйл, а просто указывая маленький размер для большой картинки. Может это болезнь со старых времен медленного интернета, но вот не приемлю. Мне это бредом кажется. Посему будем делать тумбнэйлы. Для этого использую расширение EWideImage.
+Кстати, расширения буду загонять в модуль каталога а не в ext приложения для обеспечения мало-мальской автономии создаваемого модуля.</p>
+
+<p>Как подключить расширение внутри модуля? Очевидно нужен свой конфигурационный файл. И его надо как-то подхватывать. По примеру приложения делаю папку <strong>config</strong> и в ней файл <strong>main.php</strong> вот такого содержания:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+</span><span class='line'><span class="p">);</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Теперь его как-то надо подхватить. В функции <strong>init</strong> в начало вставляем:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'>        <span class="nv">$config</span> <span class="o">=</span> <span class="k">require</span> <span class="nb">dirname</span><span class="p">(</span><span class="k">__FILE__</span><span class="p">)</span> <span class="o">.</span> <span class="nx">DIRECTORY_SEPARATOR</span> <span class="o">.</span> <span class="s1">&#39;config&#39;</span><span class="o">.</span> <span class="nx">DIRECTORY_SEPARATOR</span>  <span class="o">.</span><span class="s1">&#39;main.php&#39;</span><span class="p">;</span>
+</span><span class='line'>        <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">configure</span><span class="p">(</span><span class="nv">$config</span><span class="p">);</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> Всё. По идее теперь можно туда писать то-же, что и для приложения, только локально для данного модуля.</p>
+
+<p>Для удобства определяю Алиасы на модуль и его расширения. В конфиге Выше возврата массива пишем</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="nv">$catalogConfigDir</span> <span class="o">=</span> <span class="nb">dirname</span><span class="p">(</span><span class="k">__FILE__</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$rootCatalog</span> <span class="o">=</span> <span class="nv">$catalogConfigDir</span> <span class="o">.</span> <span class="nx">DIRECTORY_SEPARATOR</span> <span class="o">.</span> <span class="s1">&#39;..&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="nx">Yii</span><span class="o">::</span><span class="na">setPathOfAlias</span><span class="p">(</span><span class="s1">&#39;mcatalog&#39;</span><span class="p">,</span> <span class="nv">$rootCatalog</span><span class="p">);</span>
+</span><span class='line'><span class="nx">Yii</span><span class="o">::</span><span class="na">setPathOfAlias</span><span class="p">(</span><span class="s1">&#39;mext&#39;</span><span class="p">,</span> <span class="nv">$rootCatalog</span> <span class="o">.</span> <span class="nx">DIRECTORY_SEPARATOR</span> <span class="o">.</span> <span class="s1">&#39;extensions&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Приступим к подключению расширений, которые будем складывать в <strong>catalog/extensions</strong></p>
+
+<h2>Расширение Nested Set</h2>
+
+<p>Страничка на офф сайте Yii: <a href="http://www.yiiframework.com/extension/nestedset">Nestedset</a></p>
+
+<p>Реализует алгоритм построения деревьев  Modified pre-order tree traversal algorithm
+Подробности о методе можно почитать <a href="http://www.sitepoint.com/hierarchical-data-database-2/">здесь</a></p>
+
+<h4>Требования.</h4>
+
+<p>Таблица БД с деревом должна иметь следующие поля:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">IF</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="o">`</span><span class="n">tree</span><span class="o">`</span> <span class="p">(</span>
+</span><span class='line'>  <span class="o">`</span><span class="n">id</span><span class="o">`</span> <span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="n">auto_increment</span><span class="p">,</span>
+</span><span class='line'>  <span class="o">`</span><span class="n">lft</span><span class="o">`</span> <span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+</span><span class='line'>  <span class="o">`</span><span class="n">rgt</span><span class="o">`</span> <span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+</span><span class='line'>  <span class="o">`</span><span class="k">level</span><span class="o">`</span> <span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+</span><span class='line'>  <span class="o">`</span><span class="n">name</span><span class="o">`</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">default</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="k">PRIMARY</span> <span class="k">KEY</span>  <span class="p">(</span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="p">),</span>
+</span><span class='line'>  <span class="k">KEY</span> <span class="o">`</span><span class="n">lft</span><span class="o">`</span> <span class="p">(</span><span class="o">`</span><span class="n">lft</span><span class="o">`</span><span class="p">),</span>
+</span><span class='line'>  <span class="k">KEY</span> <span class="o">`</span><span class="n">rgt</span><span class="o">`</span> <span class="p">(</span><span class="o">`</span><span class="n">rgt</span><span class="o">`</span><span class="p">),</span>
+</span><span class='line'>  <span class="k">KEY</span> <span class="o">`</span><span class="k">level</span><span class="o">`</span> <span class="p">(</span><span class="o">`</span><span class="k">level</span><span class="o">`</span><span class="p">),</span>
+</span><span class='line'>  <span class="k">KEY</span> <span class="o">`</span><span class="n">name</span><span class="o">`</span> <span class="p">(</span><span class="o">`</span><span class="n">name</span><span class="o">`</span><span class="p">)</span>
+</span><span class='line'><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Названия полей не обязательно именно такие. Потом в модели можно будет настроить.
+В Таблицу до начала работы должна быть добавлена одна запись:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">INSERT</span> <span class="k">INTO</span> <span class="o">`</span><span class="n">tree</span><span class="o">`</span> <span class="p">(</span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="p">,</span> <span class="o">`</span><span class="n">lft</span><span class="o">`</span><span class="p">,</span> <span class="o">`</span><span class="n">rgt</span><span class="o">`</span><span class="p">,</span> <span class="o">`</span><span class="k">level</span><span class="o">`</span><span class="p">,</span> <span class="o">`</span><span class="n">name</span><span class="o">`</span><span class="p">)</span> <span class="k">VALUES</span>
+</span><span class='line'><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Root&#39;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Установка.</h4>
+
+<ol>
+<li>Кидаем расширение в <strong>catalog.extensions</strong></li>
+<li>В конфигурации модуля:</li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+</span><span class='line'>    <span class="s1">&#39;import&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>        <span class="s1">&#39;mext.nestedset.*&#39;</span>
+</span><span class='line'>    <span class="p">),</span>
+</span><span class='line'><span class="p">);</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Собственно пока всё. Когда будет готова модель для категории, туда надо добавить функцию</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">behaviors</span><span class="p">(){</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">array</span><span class="p">(</span>
+</span><span class='line'>        <span class="s1">&#39;TreeBehavior&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
+</span><span class='line'>            <span class="s1">&#39;class&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;application.extensions.nestedset.TreeBehavior&#39;</span><span class="p">,</span>
+</span><span class='line'>            <span class="s1">&#39;_idCol&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;id&#39;</span><span class="p">,</span>
+</span><span class='line'>            <span class="s1">&#39;_leftCol&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;left&#39;</span><span class="p">,</span>
+</span><span class='line'>            <span class="s1">&#39;_rightCol&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;right&#39;</span><span class="p">,</span>
+</span><span class='line'>            <span class="s1">&#39;_levelCol&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;level&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="p">)</span>
+</span><span class='line'>    <span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Расширение EWideImage</h2>
+
+<p>Домашняя страница <a href="http://www.yiiframework.com/extension/ewideimage">EWideImage</a>
+Установка - положить в папку расширений модуля и добавить в конфиг в секцию импорта <code>'mext.EWideImage.EWideImage'</code></p>
+
+<h2>Создание скелета</h2>
+
+<p>Удобная всё таки штука - GII. Мне в принципе понравилось, как я переоформил вьюшки модуля Yii и в этом модуле хочу сделать аналогичные. Большая часть вьюшек получается стандартной. Поэтому в папке <strong>mcatalog.lib.gii</strong> готовлю скелет с нужным оформлением для кодогенератора. За основу беру шаблон расширения Yii-bootstrap и немного переделываю вьюшки. Так же чуть меняю модель, добавляя функцию, возвращающую имя сущности в разных падежах и склонениях. Это нужно для менюшек и крошек во вьюшках.
+Код шаблонов в репозитории, никаких хитростей и проблем с подготовкой шаблона не было, так что тут и писать особо нечего. Не очень понятно, зачем нужна вьюшка с листом <strong>index</strong>, всё что надо есть в <strong>admin</strong> ну пусть будет, дальше посмотрим что из неё можно сделать, глядишь и пригодится. Честно переоформил в «свой» стиль и оставил в шаблоне.</p>
+
+<p>Создаю все модели и CRUD через  новый шаблон кодогенератора (путь к новому шаблону указывается в главном конфиге приложения в секции GII). Собственно, скелет создан.</p>
+
+<p>Теперь время приводить в порядок его бакенд. Фронт будем делать потом. Кодогенератор сделал очень большой кусок работы, но её там ещё полно. Начнем с мелочей. Это отображение и редактирование связанных данных, типа
+вывода Имени Вендора вместо его id в карточке товара и выбор так же по имени. Желательно из ДропДаун листиков. Желательно симпатишных. Желательно с аякс-фильтром при наборе текста. Это наиболее удобно, особенно если в списке больше 10 позиций.</p>
+
+<h2>Расширение ESelect2</h2>
+
+<p><a href="http://www.yiiframework.com/extension/select2">Домашняя страничка на офф сайте</a>
+Это Yii врапер для плагина Select2 Jqube. Прост в использовании и удобен. Поэтому нафиг велосипеды, будем пользоваться им. Качаю, распаковываю в <strong>mext</strong> (напомню, это алиас папки extensions модуля каталога),
+прописываю в конфиге импорт <strong>&#8216;mext.select2.ESelect2&#8217;</strong> . Можно пользоваться. Открываем <strong>_form</strong> для <strong>JProduct</strong> и меняем поле для <strong>product_vendor</strong> на вот такую конструкцию:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="x">&lt;/p&gt;Производитель </span>
+</span><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="nv">$vendorItems</span> <span class="o">=</span> <span class="nx">CHtml</span><span class="o">::</span><span class="na">listData</span><span class="p">(</span><span class="nx">JVendor</span><span class="o">::</span><span class="na">model</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">findAll</span><span class="p">(),</span> <span class="s1">&#39;vendor_id&#39;</span><span class="p">,</span> <span class="s1">&#39;vendor_name&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">widget</span><span class="p">(</span><span class="s1">&#39;mext.select2.ESelect2&#39;</span><span class="p">,</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>  <span class="s1">&#39;model&#39;</span><span class="o">=&gt;</span><span class="nv">$model</span><span class="p">,</span>
+</span><span class='line'>    <span class="s1">&#39;attribute&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;product_vendor&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="s1">&#39;data&#39;</span><span class="o">=&gt;</span><span class="nv">$vendorItems</span><span class="p">,</span>
+</span><span class='line'>    <span class="s1">&#39;htmlOptions&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>    <span class="s1">&#39;class&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;selectdrop5&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="p">),</span>
+</span><span class='line'><span class="p">));</span> <span class="cp">?&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">&lt;/p&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>То есть сначала создаем полный список производителей в <strong>$vendorItems</strong> и запускаем расширение, в качестве параметров подсовывая ему модель продукта, созданный список и ключевой столбец ( <strong>product_vendor</strong> ) из модели для данных о вендорах. Проверяем, всё работает. Красяво, удобно и кода мизер. Полный феншуй. <br/>
+Поясню о <strong>&#8216;class&#8217;=>&#8217;selectdrop5&#8217;</strong> После запуска без класса выглядело всё не очень хорошо. Создал пакет классов для таких дропбоксов, синхронизируя их по размеру с разметкой bootdtrap:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='css'><span class='line'><span class="o">[</span><span class="nt">class</span><span class="o">*=</span><span class="s2">&quot;selectdrop&quot;</span><span class="o">]</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">margin-top</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nc">.selectdrop5</span> <span class="p">{</span><span class="k">width</span><span class="o">:</span><span class="m">380px</span><span class="p">;}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ну и по мере надобности буду добавлять циферки на хвосте класса с соответствующими размерами.
+.selectdrop5 по ширине соответствует стандартному <strong>span5</strong> бутстрапа. эти стили положил в <strong>mcatalog.css/fmenu.css</strong>. Только теперь уже там не только стили, относящиеся к плавающей менюшке. Поэтому переобзываю файл в jcatalog.css и соответственно подправляю <strong>mcatalog.views.layouts.column1</strong></p>
+
+<p>Аналогичным способ меняю всё, где нужны подобные связанные дроплисты.
+Ну а там, где надо просто показать связанное поле, просто пишем конструкцию типа</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'> <span class="k">echo</span> <span class="nv">$model</span><span class="o">-&gt;</span><span class="na">Vendor</span><span class="o">-&gt;</span><span class="na">vendor_name</span><span class="p">;</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Соответственно строка в функции <strong>relations()</strong> модели выглядит так:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'> <span class="s1">&#39;Vendor&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="nx">self</span><span class="o">::</span><span class="na">BELONGS_TO</span><span class="p">,</span> <span class="s1">&#39;JVendor&#39;</span><span class="p">,</span> <span class="s1">&#39;product_vendor&#39;</span><span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>self::BELONGS_TO</strong> - тип связи &#8220;многие к одному&#8221;. Соответственно для других типов связи такая конструкция как <strong>echo $model->Vendor->vendor_name;</strong> не прокатит по очевидным причинам. <strong>JVendor</strong> - класс модели родительской таблицы. <strong>product_vendor</strong> - внешний ключ.</p>
+
+<p>Как это засунуть например в <strong>TbDetailView</strong> (это в файле <strong>view.php</strong> класса JProduct)?
+вместо <strong>&#8216;product_vendor&#8217;</strong> в перечислении атрибутов вставляем</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="k">array</span><span class="p">(</span> <span class="s1">&#39;name&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;product_vendor&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;value&#39;</span><span class="o">=&gt;</span><span class="nv">$model</span><span class="o">-&gt;</span><span class="na">Vendor</span><span class="o">-&gt;</span><span class="na">vendor_name</span><span class="p">,</span>
+</span><span class='line'><span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Вышесказанное справедливо и для *GridView.
+Соответствующие манипуляции проделываем везде, где требуется. Не забыть подправить везде сгенерированные функции <strong>relations</strong>. Генератор в качестве референсной таблицы вбивает собственно имя таблицы, а не класса, который мы создаем на базе этой таблицы. (Ну разве что в качестве имен классов использовать собственно имена таблиц)</p>
+
+<p>Теперь ещё бы неплохо реализовать редактирование полей вроде описаний и характеристик в чём-нибудь ВайСиВинговском.</p>
+
+<h2>Подключаем CKEditor</h2>
+
+<p>CKEditor - это новая версия всем известного FCKeditor. Какая-то там история была на тему начальных букв &#8220;FCK&#8221; и вроде как из-за неё поменяли название. Ну не суть. Идём на сайт редактора и скачиваем <a href="http://ckeditor.com/download">отсюда</a> последнюю версию. Вот тут отступлю от правила &#8220;всё в модуле&#8221; и содержимое архива (то есть папку <strong>ckeditor</strong>) отправляю в корневую директорию сайта. Потом подумаю, можно ли его вообще запустить внутри модуля, который в <strong>protected</strong> с  deny all лежит. Впрочем не сильно это и надо.</p>
+
+<p>Для публикации редактора с нужными полями воспользуемся классом CHtml. Минут 10 раздумывал, куда положить вспомогательный класс, ничего умнее папки <strong>helpers</strong> не придумал. Там создал маленький класс <strong>JCKeditor</strong> специально для публикации редактора.  Код не привожу, лежит в сорцах. Вызывается</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>   <span class="nx">JCKeditor</span><span class="o">::</span><span class="na">activeCKEditor</span><span class="p">(</span><span class="nv">$model</span><span class="p">,</span><span class="s1">&#39;product_review&#39;</span><span class="p">,</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;height&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;200px&#39;</span><span class="p">));</span>  <span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Модель понятно, второй параметр - атрибут модели, для которого вызываем редактор, 3 параметр - массив с настройками редактора. на формах _form соответственно добавляем вызов редактора там, где надо.</p>
+
+<p>Связанные данные где надо показали, редактор к нужным полям прикрутили. Осталось только чуть переформатировать &#8220;простыни&#8221; форм, где они слишком длинные. Делаю это бутстраповской стандартной вёрсткой для наведения окончательного феншуя в бэкенде.</p>
+
+<p>Забыл&#8230; Картинки!!! С ними надо что-то делать. И показывать и загружать и удалять&#8230; Ну что же, приступим.</p>
+
+<h2>Операции с фото.</h2>
+
+<p>Для начала определим базовую директорию для всех картинок товаров. Не буду извращаться (или это наоборот извращение?) Определим прямо в файле модуля:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="k">public</span> <span class="k">static</span> <span class="nv">$imgBase</span> <span class="o">=</span> <span class="s1">&#39;images/catalog&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>То есть <strong>images</strong> лежит в корне сайта, как обычно. Переменная доступна из любого места вызовом</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="nx">CatalogModule</span><span class="o">::</span><span class="nv">$imgBase</span><span class="p">;</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Все картинки для товаров должны лежать строго в определенных местах.  Места сии прописаны в категориях относительно базового пути для фото.</p>
+
+<p>Порывшись на офф сайте нашел вполне подходящий инструмент.</p>
+
+<h3>Расширение lcswfupload</h3>
+
+<p><a href="http://www.yiiframework.com/extension/lcswfupload/">Страничка на оффсайте</a></p>
+
+<p>Собственно по инструкции установил. Плюс чуть покопался в header.js на предмет отключения лишних сообщений после загрузки. В частности вывод названия темп-файла.  Плюс добавил два атрибута самому виджету с АйДи продукта и именем заменяемой фотографии, иначе сложно было бы делать замену картинки в модели.</p>
+
+<p>Очень долго возился с ajax, хотелось всё сделать строго в идеологии фрэймворка. Вроде-бы получилось.
+В конце концов всё сделал почти так, как хотелось. Подробные комментарии написал в функциях контроллеров продукта и фотографий, а так же очень подробно в представлениях <em>form и </em>frameAddPhoto (оба относятся к контроллеру JProductController.  Поэтому здесь подробно не описываю, должно быть понятно по коду и подробным комментариям в нём. Единственное, чем остался не совсем удовлетворен, это тем что ограничил работу с фото нового продукта. Все операции с фото после сохранения нового продукта. Можно сделать, но чувствую долго и нудно надо копаться. В остальном админка продуктов почти готова.</p>
+
+<p>В целом фрэймворк пока нравится. Легкий, удобный, хорошо расписан API. Урок по созданию блога конечно ни о чём, но тут уж селяви.</p>
+
+<h2>Фронт одного продукта.</h2>
+
+<p>Люблю писать код мелкими кусками и потом собирать эти куски &#8220;рекваре онцами&#8221;. Вот и здесь не буду отступать
+от правила. Основным файлом будет views/jProduct/view.php. А в него уже кусками будем стыковать блоки.
+Фронт вообще надо писать более вдумчиво, чем админку. Тут MVC должно проявляться во всей красе, кода должно быть как можно меньше, один сплошной дизайн, дабы легко его можно было менять. Начнем с блока показа фото.</p>
+
+<h3>Блок показа фото _frontBlockPhoto.php</h3>
+
+<p> Надо сделать стильненько. Ну это CSS и немножко JQuery. Но сначала надо подготовить все данные в &#8220;готовом виде. В представление из контроллера будем отдавать несколько обьектов и массивов:</p>
+
+<ul>
+<li>$model - собственно продукт, обьект JProduct</li>
+<li>$addPhotosURL массив с готовыми URL с &#8220;дополнительными&#8221; фото продукта. (или &#8220;большими тумбами&#8221;, если размер самих фото не стандартизован)</li>
+<li>$tumbsUrl - массив url к тумбнэйльчикам нужного для представления размера</li>
+<li>$corePhotosURL массив URL к &#8220;основной&#8221; и &#8220;технической&#8221; фото продукта.</li>
+</ul>
+
+
+<p>И готовить всё это удовольствие будем не в контроллере даже, а в модели. Ведь по сути идеология MVC сводится в основном к правилу «Делай модель как можно толще, а остальное как можно тоньше». Несколько утрированно, но по сути верно.</p>
+
+<p>Все функции по подготовке этих данных постарался расписать в коде в комментариях более-менее подробно, так что здесь необходимости в этом нет.</p>
+
+<p>Какое-то время соображал, как лучше всего реализовать «перемещение» по тумбнэйлам в боксе. Что-бы и просто было с точки зрения кода и нагрузки лишней не создавало. В конце концов решил просто передать массив с «большими» фотографиями яваскрипту тупо через JSON (1 строка) и кодом JQuery (1 строка) отреагировать на клик по тумбнэйлу с запихиванием в div с большой фото данные из массива. В клике передаю просто индекс элемента.  Вобщем по мне так симпапушно вполне. Вообще, хочу заметить, JQery хотя-бы в начальном приближении любой современный сайто строитель по моему знать должен. К стыду своему, я его знаю в очень очень начальном приближении. Иногда вместо того, что-бы искать и подрубать к сайту всякие монстро-плагины, по идее быстрее и красивее самому написать несколько строк. Но мозгов на это, к сожалению, хватает далеко не всегда.</p>
+
+<p>Ну в данном случае даже моих хватило, что-бы нарисовать симпатишный бокс показа фото: ;-)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="nv">$i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="k">foreach</span> <span class="p">(</span><span class="nv">$tumbsUrl</span> <span class="k">as</span> <span class="nv">$tumb</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">echo</span> <span class="s1">&#39;&lt;li&gt;&lt;img src=&quot;&#39;</span> <span class="o">.</span> <span class="nv">$tumb</span> <span class="o">.</span> <span class="s1">&#39;&quot; OnClick=&quot;ChangeImg(&#39;</span> <span class="o">.</span> <span class="nv">$i</span> <span class="o">.</span> <span class="s1">&#39;)&quot;&gt;&lt;/li&gt;&#39;</span><span class="p">;</span>
+</span><span class='line'>  <span class="nv">$i</span><span class="o">++</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span><span class='line'><span class="x">&lt;script&gt;</span>
+</span><span class='line'><span class="x">    // Передача в JS массива с URL фотографий</span>
+</span><span class='line'><span class="x">    var bigImgs = JSON.parse(&#39;</span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nb">json_encode</span><span class="p">(</span><span class="nv">$addPhotosURL</span><span class="p">)</span> <span class="cp">?&gt;</span><span class="x">&#39;);</span>
+</span><span class='line'><span class="x">    // При клике на тумбале выводим большое фото в img с id  &quot;bigImg&quot;</span>
+</span><span class='line'><span class="x">    function ChangeImg(id){ $(&quot;#bigImg&quot;).attr(&quot;src&quot;, bigImgs[id]); }</span>
+</span><span class='line'><span class="x">&lt;/script&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ну и вокруг обвязка CSS, с которой собственно и провозился львиную долю времени подготовки это блока. Около часа наверное сидел «подгонял». Всё то одно не нравилось, то другое. Сейчас вроде нормально.</p>
+
+<h3>Блок показа описания и характеристик _frontBlockOverwiew.php</h3>
+
+<p>Ну тут делов было ровно на 10 минут - бутстраповские «табочки», вывод в лоб нужных полей и всё. Благо CSS уже готов для всей страницы.  Собственно всё. Ещё блок цен (розничной и оптовой, с показом последней только Дилерам), но там вёрстки и на 5 минут не набралось. Стандартные алерты бутстрапа вполне сгодились.</p>
+
+<p>Ещё убрал «второе меню» со всех глаз, кроме админских. А Админу оставил. Можно в правку заходить в «лоб», с фронта. Я считаю это удобным. Секурность вроде в порядке, так что мона.</p>
+
+<p>Ну вот и готова первая «фронтальная» страничка. Потом правда придется к ней вернуться, когда с заказами и корзинками буду возиться.</p>
+
+<p>Продолжим с фронтом. Идём снизу вверх, на очереди</p>
+
+<h2>Показ категории</h2>
+
+<p>Двигаем теперь от контроллера JCategoryController. Вобще-то хотелось при показе категорий избавиться от обращений «наверх», например для вытаскивания фото товаров и работать в представлении только с тем, что «спустили сверху». Но нам надо кучу товаров показывать в одном месте&#8230; Вариантов несколько. Первый это плюнуть на это желание и в представлении таки лезть наверх. В конце концов невилико увеличение кода от строчки <code>$corePhotosURL= $model-&gt;getUrlCorePhoto();</code>  Но оно же только начать&#8230; А через надцать промежутков времени черт ногу сломит. Вариант 2. Расширить модель продукта и запихнуть фото в неё.
+Вариант 3. Не впихивать в базовую модель сторонние объекты, а унаследоваться от неё и засунуть всю эту радость уже в наследника.</p>
+
+<p>А если идти дальше, то можно вообще «родить» ещё от категории и туда засунуть атрибутами продукты, в которые запихнули картинки. Правда это монстро-обьект&#8230; Хотя ещё ведь вендор сверху есть, так что путь по умонстрению классов  ещё открыт и широк. ;-).</p>
+
+<p>Шутка конечно. Укрупнять классы нет никакой необходимости, <code>$corePhotosURL= $model-&gt;getUrlCorePhoto();</code> вполне себе пойдёт в представлении. Ничем это не менее прозрачно, чем  <code>$prdName= $model-&gt;product\_name;</code>
+Какая разница, к методу обращаться или атрибуту. Скорее наоборот «разрядить» - выделить например всю работу с картинками в отдельный класс. Просто пока смысла нет - модель ещё не такая уж толстая, а этот гипотетический класс больше и использовать негде. Хотя&#8230; Вот у меня для категории предусмотрено несколько картинок&#8230; Ладно, дальше видно будет.</p>
+
+<p>А пока готовим вывод категории с теми классами что есть.</p>
+
+<p>Задача: красивенько вывести весь товар из категории с полем <code>show=&gt;true</code> и симпатишненько его изобразить. Ну и фото категорий куда-нибудь пристроить, для примера. Пока не трогаем мэни-мэни модель и отрабатываем только принадлежность товара к главной категории. мэни-мэни - просто столб на будущее развитие, если таковое будет.</p>
+
+<p>Пока для данного проекта ни к чему.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">AngryGantz</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-03T19:15:00+06:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/jcfyii/'>JCFYii</a>, <a class='category' href='/blog/categories/yii/'>Yii</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://AngryGantz.github.com/blog/2012/12/03/jcfyii-6/" data-via="" data-counturl="http://AngryGantz.github.com/blog/2012/12/03/jcfyii-6/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/12/03/jcfyii-5/" title="Previous Post: JCFYii 5. Дизайн-макет">&laquo; JCFYii 5. Дизайн-макет</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Последние заметки</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/12/03/jcfyii-6/">JCFYii 6. Каталог товаров</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/03/jcfyii-5/">JCFYii 5. Дизайн-макет</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/03/jcfyii-4/">JCFYii 4 Управление пользователями и правами.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/03/jcfyii-3/">JCFYii 3. Bootstrap</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/03/jcfyii-2/">JCFYii 2. Выбор структуры и первичная настройка</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - AngryGantz -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
