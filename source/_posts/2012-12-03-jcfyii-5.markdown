@@ -1,0 +1,112 @@
+---
+layout: post
+title: "JCFYii 5. Дизайн-макет"
+date: 2012-12-03 18:24
+comments: true
+categories: JCFYii Yii 
+---
+
+Надо поднастроить **main.css**. Во первых дать отступ body на ширину меню, во вторых убрать border. Пусть страничка беленькая будет. Получаем вот такой код css для трех важных для этого элементов:
+<!-- more -->
+
+### main.css
+
+```css
+body
+{
+	margin: 0;
+	padding: 0;
+	color: #555;
+	font: normal 10pt Arial,Helvetica,sans-serif;
+	background: #EFEFEF;
+}
+#page
+{
+	margin-top: 40px;
+	margin-bottom: 5px;
+	background: white;
+}
+#header
+{
+	margin: 0;
+	padding: 0;
+}
+```
+
+Впрочем, Header нам сейчас не нужен. Разве что крошки туда загнать. Так и делаем. Вот от этого беленьекого листа с симпатишной менюшкой и будем плясать. 
+
+Крошки загоняем в Header и меняем виджет на bootstrap:
+
+```php
+<?php
+if (isset($this->breadcrumbs)):
+	$this->widget('bootstrap.widgets.TbBreadcrumbs', array(
+		'links' => $this->breadcrumbs,
+	));
+endif
+?>
+```
+
+Мои благие намерения не лезть в модули канули в лето. Но уж больно мне не понравился дизайн вьюшек Yii-User. Полностью переделал все вьюшки в "bootrap-style" Постараюсь хотя бы логику не трогать. В этом вроде как необходимости нет слава богу. 
+
+Итак, готовый скелет с работающей системой управления пользователями на основе ролей можно считать есть. 
+По хорошему конечно потестировать бы с недельку уже на этом этапе, но не в продакшен сайи идёт, пока так, баловство. Так что этот этап пропустим пока. Хотя потом надо будет заняться вопросами тестирования приложений на yii всерьёз. Как никак это чуть ли не половина работы на нормальном проекте.
+
+## Меню
+
+Может я не понимаю своего счастья, но виджет CMenu меня не впечатлил. Будем делать меню на любимом Bootstrap
+И кстати есть желание поделить лайоут main на несколько файлов для наглядности. В частности меню рисовать в отдельном файле, вызывамом из главного. Обзовём _menu.php и приступим. 
+
+Старое загоним в файл _cmenu, на всякий случай. И оба файлика положим в созданную папку **layouts/add**
+из лайоута **main** меню будем подтягивать кодом `<?php require_once '/add/_cmenu.php'; ?>` 
+
+Беру из документации пример менюшки, загоняю в **_menu.php** и смотрю что получилось -)
+
+```php
+<?php $this->widget('bootstrap.widgets.TbNavbar', array(
+    'type'=>'inverse', // null or 'inverse'
+    'brand'=>'Project name',
+    'brandUrl'=>'#',
+    'collapse'=>true, // requires bootstrap-responsive.css
+    'items'=>array(
+        array(
+            'class'=>'bootstrap.widgets.TbMenu',
+            'items'=>array(
+                array('label'=>'Home', 'url'=>'#', 'active'=>true),
+                array('label'=>'Link', 'url'=>'#'),
+                array('label'=>'Dropdown', 'url'=>'#', 'items'=>array(
+                    array('label'=>'Action', 'url'=>'#'),
+                    array('label'=>'Another action', 'url'=>'#'),
+                    array('label'=>'Something else here', 'url'=>'#'),
+                    '---',
+                    array('label'=>'NAV HEADER'),
+                    array('label'=>'Separated link', 'url'=>'#'),
+                    array('label'=>'One more separated link', 'url'=>'#'),
+                )),
+            ),
+        ),
+        '<form class="navbar-search pull-left" action=""><input type="text" class="search-query span2" placeholder="Search"></form>',
+        array(
+            'class'=>'bootstrap.widgets.TbMenu',
+            'htmlOptions'=>array('class'=>'pull-right'),
+            'items'=>array(
+                array('label'=>'Link', 'url'=>'#'),
+                '---',
+                array('label'=>'Dropdown', 'url'=>'#', 'items'=>array(
+                    array('label'=>'Action', 'url'=>'#'),
+                    array('label'=>'Another action', 'url'=>'#'),
+                    array('label'=>'Something else here', 'url'=>'#'),
+                    '---',
+                    array('label'=>'Separated link', 'url'=>'#'),
+                )),
+            ),
+        ),
+    ),
+)); ?>
+```
+
+Ошибок в консоли не видно, всё работает. Осталось донастроить и меню готово :-). Симпатишное, функциональное, красявое, за что и люблю bootstrap. Сайт будем делать светлым и менюшку тоже. Так что первым делом убираю инверсию. 
+
+Делее правим строчку `'brandUrl'=>'index'` - Это будет вместо кнопочки **Home**, которую выкидываем. Далее меняем label=>link на Label=>Каталог, оставляя пока Урл пустым, это на будущее. Далее будут Контакты, куда же без них. 
+
+

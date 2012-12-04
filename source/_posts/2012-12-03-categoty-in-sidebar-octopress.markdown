@@ -1,0 +1,60 @@
+---
+layout: post
+title: "Секция категорий в сайдбаре Octopress"
+date: 2012-12-03 21:12
+comments: true
+categories: Octopress
+---
+В стандартной поставке Octopress остутствует как ни странно модуль для сайдбара со списком категорий блога.
+Исправляем сей небольшой недостаток.
+<!-- more -->
+
+## Плагин
+
+В папке плгинов ( **root/plugins** ) создаем файл **category_list_tag.rb** 
+вот такого содержания:
+
+```ruby
+module Jekyll
+  class CategoryListTag < Liquid::Tag
+    def render(context)
+      html = ""
+      categories = context.registers[:site].categories.keys
+      categories.sort.each do |category|
+        posts_in_category = context.registers[:site].categories[category].size
+        category_dir = context.registers[:site].config['category_dir']
+        category_url = File.join(category_dir, category.gsub(/_|\P{Word}/, '-').gsub(/-{2,}/, '-').downcase)
+        html << "<li class='category'><a href='/#{category_url}/'>#{category} (#{posts_in_category})</a></li>\n"
+      end
+      html
+    end
+  end
+end
+
+Liquid::Template.register_tag('category_list', Jekyll::CategoryListTag)
+
+```
+
+## Шаблон секции
+
+Создаем файл **root/source/\_includes/asides** со следующим содержанием:
+
+```html
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    {% category_list %}
+  </ul>
+</section>
+```
+
+## Подключение
+
+в файле **root/_config.yml** в разделе включения модулей сайдбара добавляем наш:
+
+```ruby
+default_asides: [asides/category_list.html, asides/recent_posts.html,.... ]
+```
+
+Собственно всё.
+
