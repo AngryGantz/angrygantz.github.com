@@ -4,7 +4,7 @@
   <title><![CDATA[AngryGantz]]></title>
   <link href="http://AngryGantz.github.com/atom.xml" rel="self"/>
   <link href="http://AngryGantz.github.com/"/>
-  <updated>2012-12-04T00:02:44+06:00</updated>
+  <updated>2012-12-04T01:35:51+00:00</updated>
   <id>http://AngryGantz.github.com/</id>
   <author>
     <name><![CDATA[AngryGantz]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Секция категорий в сайдбаре Octopress]]></title>
     <link href="http://AngryGantz.github.com/blog/2012/12/03/categoty-in-sidebar-octopress/"/>
-    <updated>2012-12-03T21:12:00+06:00</updated>
+    <updated>2012-12-03T21:12:00+00:00</updated>
     <id>http://AngryGantz.github.com/blog/2012/12/03/categoty-in-sidebar-octopress</id>
     <content type="html"><![CDATA[<p>В стандартной поставке Octopress остутствует как ни странно модуль для сайдбара со списком категорий блога.
 Исправляем сей небольшой недостаток.</p>
@@ -104,7 +104,7 @@
   <entry>
     <title type="html"><![CDATA[JCFYii 6. Каталог товаров]]></title>
     <link href="http://AngryGantz.github.com/blog/2012/12/03/jcfyii-6/"/>
-    <updated>2012-12-03T19:15:00+06:00</updated>
+    <updated>2012-12-03T19:15:00+00:00</updated>
     <id>http://AngryGantz.github.com/blog/2012/12/03/jcfyii-6</id>
     <content type="html"><![CDATA[<p>Так. Пора приступать к каталогу товаров. Буду делать отдельным модулем. В этот же модуль пойдёт всё, что относится к заказам. В конечном итоге У меня будет несколько групп заказчиков и плюс менеджеры, обрабатывающие заказ. Модуль буду делать максимально автономным. В данном случае он будет работать совместно со связкой Y-ii+rights, но в принципе это не обязательно. Просто надо будет реализовать какой-то простой API связи с юзерами и ролями, желательно в одном файле. Офрмлю скорее всего в виде хелпера или отдельного класса типа &#8220;ApiToUser&#8221; где будет проверка на принадлежность к группе и выдёргивание нужных полей из модуля Yii-User типа имени пользователя и, может быть, ещё каких либо полей профайла. Таким образом можно будет добиться полной автономии модуля от всего, кроме расширения bootstrap. Но на эту зависимость иду вполне осознанно. В принципе можно конечно bootstrap засунуть прямо в модуль, но он в приложении везде использоваться будет. Вобщем если вдруг этот эксперимент нечаянно по прихоти судьбы будет нужен ещё кому-то кроме меня, он сам сможет засунуть bootstrap в модуль и получить полную автономность.</p>
 
@@ -535,7 +535,7 @@
   <entry>
     <title type="html"><![CDATA[JCFYii 5. Дизайн-макет]]></title>
     <link href="http://AngryGantz.github.com/blog/2012/12/03/jcfyii-5/"/>
-    <updated>2012-12-03T18:24:00+06:00</updated>
+    <updated>2012-12-03T18:24:00+00:00</updated>
     <id>http://AngryGantz.github.com/blog/2012/12/03/jcfyii-5</id>
     <content type="html"><![CDATA[<p>Надо поднастроить <strong>main.css</strong>. Во первых дать отступ body на ширину меню, во вторых убрать border. Пусть страничка беленькая будет. Получаем вот такой код css для трех важных для этого элементов:</p>
 
@@ -713,7 +713,7 @@
   <entry>
     <title type="html"><![CDATA[JCFYii 4 Управление пользователями и правами.]]></title>
     <link href="http://AngryGantz.github.com/blog/2012/12/03/jcfyii-4/"/>
-    <updated>2012-12-03T11:13:00+06:00</updated>
+    <updated>2012-12-03T11:13:00+00:00</updated>
     <id>http://AngryGantz.github.com/blog/2012/12/03/jcfyii-4</id>
     <content type="html"><![CDATA[<p>Что нужно практически в любом web-приложении? Что бы мы не делали, практически всегда необходима система управления пользователями и их правами. Только совсем простейшие проекты обходятся без этого. Поэтому до перехода ко всему остальному надо прикрутить что-то такое к проекту.</p>
 
@@ -1027,7 +1027,7 @@
   <entry>
     <title type="html"><![CDATA[JCFYii 3. Bootstrap]]></title>
     <link href="http://AngryGantz.github.com/blog/2012/12/03/jcfyii-3/"/>
-    <updated>2012-12-03T09:00:00+06:00</updated>
+    <updated>2012-12-03T09:00:00+00:00</updated>
     <id>http://AngryGantz.github.com/blog/2012/12/03/jcfyii-3</id>
     <content type="html"><![CDATA[<p>Ну а куда сегодня без него? :-) Уж слишком полезная и удобная вещь. Однозначно буду использовать.
 Вот только вопрос как и в каком виде? На офф сайте несколько вроде как приятных расширений, которые упрощают работу с бутстрапом в рамках Yii - и оболочки для виджетов и шаблоны генератора кода для Gii и вообще много полезного&#8230;</p>
@@ -1115,7 +1115,7 @@
   <entry>
     <title type="html"><![CDATA[JCFYii 2. Выбор структуры и первичная настройка]]></title>
     <link href="http://AngryGantz.github.com/blog/2012/12/03/jcfyii-2/"/>
-    <updated>2012-12-03T02:20:00+06:00</updated>
+    <updated>2012-12-03T02:20:00+00:00</updated>
     <id>http://AngryGantz.github.com/blog/2012/12/03/jcfyii-2</id>
     <content type="html"><![CDATA[<p>Не тот случай, что-бы изобретать велосипеды. За базу взято стандартное приложение yii, генерируемое из консоли
 командой <code>% YiiRoot/framework/yiic webapp WebRoot/testdrive</code>.  Думаю это снимет часть проблем новичка. Хотя конечно правильнее на мой взгляд делить фронт и бэк. А тут по структуре всё вроде как в куче получается.
@@ -1288,7 +1288,7 @@
   <entry>
     <title type="html"><![CDATA[JCFYii 1. Описание]]></title>
     <link href="http://AngryGantz.github.com/blog/2012/12/03/new-post/"/>
-    <updated>2012-12-03T01:05:00+06:00</updated>
+    <updated>2012-12-03T01:05:00+00:00</updated>
     <id>http://AngryGantz.github.com/blog/2012/12/03/new-post</id>
     <content type="html"><![CDATA[<p>Вряд ли кого-то может заинтересовать то, что здесь есть и будет в ближайшее время.
 Просто я начал разбираться с новым для меня фрэймворком - yii и гитхаб использую в качестве некоего дневника

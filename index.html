@@ -1,0 +1,506 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>AngryGantz</title>
+  <meta name="author" content="AngryGantz">
+
+  
+  <meta name="description" content="В стандартной поставке Octopress остутствует как ни странно модуль для сайдбара со списком категорий блога.
+Исправляем сей небольшой недостаток. ">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://AngryGantz.github.com/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="AngryGantz" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">AngryGantz</a></h1>
+  
+    <h2>Заметки о Web-стройках</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss email">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+    <li><a href="angrygantz@gmail.com" rel="subscribe-email" title="subscribe via email">Email</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:AngryGantz.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Блог</a></li>
+  <li><a href="/blog/archives">Архив</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/12/03/categoty-in-sidebar-octopress/">Секция категорий в сайдбаре Octopress</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-03T21:12:00+00:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2012</time>
+        
+         | <a href="/blog/2012/12/03/categoty-in-sidebar-octopress/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>В стандартной поставке Octopress остутствует как ни странно модуль для сайдбара со списком категорий блога.
+Исправляем сей небольшой недостаток.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/12/03/categoty-in-sidebar-octopress/">Подробно &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/12/03/jcfyii-6/">JCFYii 6. Каталог товаров</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-03T19:15:00+00:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2012</time>
+        
+         | <a href="/blog/2012/12/03/jcfyii-6/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Так. Пора приступать к каталогу товаров. Буду делать отдельным модулем. В этот же модуль пойдёт всё, что относится к заказам. В конечном итоге У меня будет несколько групп заказчиков и плюс менеджеры, обрабатывающие заказ. Модуль буду делать максимально автономным. В данном случае он будет работать совместно со связкой Y-ii+rights, но в принципе это не обязательно. Просто надо будет реализовать какой-то простой API связи с юзерами и ролями, желательно в одном файле. Офрмлю скорее всего в виде хелпера или отдельного класса типа &#8220;ApiToUser&#8221; где будет проверка на принадлежность к группе и выдёргивание нужных полей из модуля Yii-User типа имени пользователя и, может быть, ещё каких либо полей профайла. Таким образом можно будет добиться полной автономии модуля от всего, кроме расширения bootstrap. Но на эту зависимость иду вполне осознанно. В принципе можно конечно bootstrap засунуть прямо в модуль, но он в приложении везде использоваться будет. Вобщем если вдруг этот эксперимент нечаянно по прихоти судьбы будет нужен ещё кому-то кроме меня, он сам сможет засунуть bootstrap в модуль и получить полную автономность.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/12/03/jcfyii-6/">Подробно &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/12/03/jcfyii-5/">JCFYii 5. Дизайн-макет</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-03T18:24:00+00:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2012</time>
+        
+         | <a href="/blog/2012/12/03/jcfyii-5/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Надо поднастроить <strong>main.css</strong>. Во первых дать отступ body на ширину меню, во вторых убрать border. Пусть страничка беленькая будет. Получаем вот такой код css для трех важных для этого элементов:</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/12/03/jcfyii-5/">Подробно &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/12/03/jcfyii-4/">JCFYii 4 Управление пользователями и правами.</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-03T11:13:00+00:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2012</time>
+        
+         | <a href="/blog/2012/12/03/jcfyii-4/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Что нужно практически в любом web-приложении? Что бы мы не делали, практически всегда необходима система управления пользователями и их правами. Только совсем простейшие проекты обходятся без этого. Поэтому до перехода ко всему остальному надо прикрутить что-то такое к проекту.</p>
+
+<p>В Yii реализована схема управления правами RBAC, есть готовые менеджеры авторизации пользователей (для БД и файла). Чудненько. Но мы ещё упростим себе жизнь и не будем отписывать реализацию, а воспользуемся чем нибудь готовым. Как сказано в одном хорошем кино «всё уже покрадено до нас». Написано как правило тоже. Так что вперед, на офф сайт за нужными плюшками.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/12/03/jcfyii-4/">Подробно &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/12/03/jcfyii-3/">JCFYii 3. Bootstrap</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-03T09:00:00+00:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2012</time>
+        
+         | <a href="/blog/2012/12/03/jcfyii-3/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Ну а куда сегодня без него? :-) Уж слишком полезная и удобная вещь. Однозначно буду использовать.
+Вот только вопрос как и в каком виде? На офф сайте несколько вроде как приятных расширений, которые упрощают работу с бутстрапом в рамках Yii - и оболочки для виджетов и шаблоны генератора кода для Gii и вообще много полезного&#8230;</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/12/03/jcfyii-3/">Подробно &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/12/03/jcfyii-2/">JCFYii 2. Выбор структуры и первичная настройка</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-03T02:20:00+00:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2012</time>
+        
+         | <a href="/blog/2012/12/03/jcfyii-2/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Не тот случай, что-бы изобретать велосипеды. За базу взято стандартное приложение yii, генерируемое из консоли
+командой <code>% YiiRoot/framework/yiic webapp WebRoot/testdrive</code>.  Думаю это снимет часть проблем новичка. Хотя конечно правильнее на мой взгляд делить фронт и бэк. А тут по структуре всё вроде как в куче получается.
+Модули фронт и бэк можно использовать как вариант, но предполагается использование кучи сторонних разработок и модули юзеров, прав и т.д. - общие и при модулях фронт-бэк будет больше путаницы, чем пользы</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/12/03/jcfyii-2/">Подробно &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/12/03/new-post/">JCFYii 1. Описание</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-03T01:05:00+00:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2012</time>
+        
+         | <a href="/blog/2012/12/03/new-post/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Вряд ли кого-то может заинтересовать то, что здесь есть и будет в ближайшее время.
+Просто я начал разбираться с новым для меня фрэймворком - yii и гитхаб использую в качестве некоего дневника
+сиих изысканий.  В качестве эксперимента решено попытаться воплотить на yii проект регионального сайта вендора.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/12/03/new-post/">Подробно &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+    <a href="/blog/archives">Архив блога</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Последние заметки</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/12/03/categoty-in-sidebar-octopress/">Секция категорий в сайдбаре Octopress</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/03/jcfyii-6/">JCFYii 6. Каталог товаров</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/03/jcfyii-5/">JCFYii 5. Дизайн-макет</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/03/jcfyii-4/">JCFYii 4 Управление пользователями и правами.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/03/jcfyii-3/">JCFYii 3. Bootstrap</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  
+  <a href="https://github.com/AngryGantz">@AngryGantz</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'AngryGantz',
+            count: 2,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+  <h1>Категории</h1>
+  <ul id="categories">
+    <li class='category cat_list cat_list'><a href='/blog/categories/jcfyii/'>JCFYii (6)</a>&nbsp;&nbsp;</li>
+<li class='category cat_list cat_list'><a href='/blog/categories/octopress/'>Octopress (1)</a>&nbsp;&nbsp;</li>
+<li class='category cat_list cat_list'><a href='/blog/categories/yii/'>Yii (3)</a>&nbsp;&nbsp;</li>
+
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - AngryGantz -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'angrygantzblog';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
