@@ -183,18 +183,23 @@
 <h2>Установка Octopress</h2>
 
 <ol>
-<li><p>Сначала надо подготовить среду. Ставим следующие пакеты:
-*Ruby</p>
+<li>Сначала надо подготовить среду. Ставим следующие пакеты:
+*Ruby
 
 <ul>
 <li>Ruby-dev</li>
 <li>Python-dev</li>
 <li>openssh</li>
-<li>git
-Внимание. На момент написания этих строк Octopress без танцев с бубнами на тему версий, нормально работал только с Ruby 1.9.2.</li>
+<li>git</li>
 </ul>
 </li>
-<li><p>Зарегистрируйтесь на github.com и создайте репозиторий с именем <strong>username.github.com</strong> Именно так, с «github.com» (иначе нужны будут дополнительные танцы с настройкой)</p></li>
+</ol>
+
+
+<p>Внимание. На момент написания этих строк Octopress без танцев с бубнами на тему версий, нормально работал только с Ruby 1.9.2.</p>
+
+<ol>
+<li>Зарегистрируйтесь на github.com и создайте репозиторий с именем <strong>username.github.com</strong> Именно так, с «github.com» (иначе нужны будут дополнительные танцы с настройкой)</li>
 <li>Тащим Octopress. Откройте терминал в домашней папке и дайте команду <code>git clone git://github.com/imathis/octopress.git octopress</code> (последний параметр - это папка котурую создаст git и сложит туда всё, что вытащит)</li>
 <li>Переходим в новую папку с Octopress. Сейчас нам потребуются права рута, что-бы поставить недостающие части. (команда <code>su</code>). Выполняем команду <code>gem install bundler</code> и затем <code>bundle install</code>. Затем выходим из режима рута (команда <code>exit</code>)</li>
 <li>Назначаем тему по умолчанию = &#8216;rake install`</li>
@@ -202,11 +207,12 @@
 <li><strong>id_rsa.pub</strong> откройте в текстовом редакторе (не консольном). Проще всего на десктопе открыть папку My Documents, в меню <code>view</code> выбрать <code>Show hidden files</code>, кликнуть на папку <strong>.ssh</strong> и кликнуть на файл <strong>id_rsa.pub</strong> Открыв файл скопируйте всё содержимое. На github.com в своём аккаунте зайдите в настройки и в разделе <code>SSH Keys</code> добавьте ключ. Название любое, поле ключа - то, что вы скопировали из файла. перед добавлением у вас попросят ввести пароль от аккаунта.</li>
 <li>Необходимо чуть донастроить git. в тарминале выполните команды:
 
-<pre><code>* git config --global user.name "GithubComUserName"
-* git config --global user.email "GithubComUserEmail" 
-</code></pre>
-
-<p>Где  &#8220;GithubComUserName&#8221; и   &#8220;GithubComUserEmail&#8221; соответственно ваши имя пользователя и Email с которыми вы регистрировались на github.com</p></li>
+<ul>
+<li>git config &#8211;global user.name &#8220;GithubComUserName&#8221;</li>
+<li>git config &#8211;global user.email &#8220;GithubComUserEmail&#8221;
+Где  &#8220;GithubComUserName&#8221; и   &#8220;GithubComUserEmail&#8221; соответственно ваши имя пользователя и Email с которыми вы регистрировались на github.com</li>
+</ul>
+</li>
 <li>Остался последний шаг по установке Octopress. Команда <code>rake setup_github_pages</code>. На вопрос об url напишите <code>git@github:USERNAME/REPONAME.git</code>  (например git@github:Pupkin/pupkin.github.com.git ) если ваш юзернэйм на github.com pupkin и вы создали репозиторий pupkin.github.com</li>
 </ol>
 
