@@ -211,6 +211,30 @@
 
 
 <p>Собственно на этом установка завершена. можно проверить работоспособность. дайте 2 команды. <code>rake new\_post["My First Post Octo"]</code> и затем <code>rake gen\_deploy</code>. Если всё сделано правильно, вы минут через 10 сможете лицезреть свой новый блог с вашим первым постом по адресу, соответствующему названию репозитория (например pupkin.github.com)</p>
+
+<h2>Неольшая донастройка среды</h2>
+
+<h3>Переключение клавиатуры</h3>
+
+<p>В процессе установки всей этой радости пусский нам не был нужен. Но теперь пора что-нибудьпредпринять, поскольку хоть русскую локаль нам как-бы дали, а вот переключение раскладки клавиатуры дать забыли.</p>
+
+<p>Простейший метод включения. в домашней директории создаем файлик <strong>rus.sh</strong> (<code>touch rus.sh</code>), делаем ег исполняемым (`chmod +x rus.sh&#8217;), jnrhsdftv tuj открываем его в текстовом редакторе и пишем в него следующее:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/sh</span>
+</span><span class='line'><span class="nb">echo</span> <span class="sb">`</span>setxkbmap <span class="s2">&quot;us,ru&quot;</span> <span class="s2">&quot;,winkeys&quot;</span> <span class="s2">&quot;grp:alt_shift_toggle,grp_led:scroll&quot;</span><span class="sb">`</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p> <br/>
+Теперь идем в меню->параметры->Auto started applications. Там жмем <code>Add</code> и в первое поле пишем имя файлика вместе с путем  нему (например <code>/home/tux/rus.sh</code></p>
+
+<p>Теперь отобразим индикатор раскладки. На верхней панели правый клик -> <code>Add remove Panel items</code> -> <code>add</code> -> из списка выбираем <code>Keyboard layot switcher</code> добвляем и кнопками Up/Down выбираем позицию показа.</p>
+
+<h3>Установка пакетв русской локали.</h3>
+
+<p>Несмотря на то, что при установке мы выбирали русскую локаль и даже часть менюшек видимна русском, на самом деле пакет русской  локали в системе н установлен. Исправляем этот недочет и ставим пакет <code>locale ru</code> или через менеджер пакетов, как вы делали это раньше, или в терминале командой <code>tazpkg get-install locale-ru</code></p>
 </div>
   
   
