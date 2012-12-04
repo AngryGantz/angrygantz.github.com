@@ -1,0 +1,449 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>JCFYii 2. Выбор структуры и первичная настройка - AngryGantz</title>
+  <meta name="author" content="AngryGantz">
+
+  
+  <meta name="description" content="Не тот случай, что-бы изобретать велосипеды. За базу взято стандартное приложение yii, генерируемое из консоли
+командой % YiiRoot/framework/yiic &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://AngryGantz.github.com/blog/2012/12/03/jcfyii-2/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="AngryGantz" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">AngryGantz</a></h1>
+  
+    <h2>Заметки о Web-стройках</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss email">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+    <li><a href="angrygantz@gmail.com" rel="subscribe-email" title="subscribe via email">Email</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:AngryGantz.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Блог</a></li>
+  <li><a href="/blog/archives">Архив</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">JCFYii 2. Выбор структуры и первичная настройка</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-03T02:20:00+06:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Не тот случай, что-бы изобретать велосипеды. За базу взято стандартное приложение yii, генерируемое из консоли
+командой <code>% YiiRoot/framework/yiic webapp WebRoot/testdrive</code>.  Думаю это снимет часть проблем новичка. Хотя конечно правильнее на мой взгляд делить фронт и бэк. А тут по структуре всё вроде как в куче получается.
+Модули фронт и бэк можно использовать как вариант, но предполагается использование кучи сторонних разработок и модули юзеров, прав и т.д. - общие и при модулях фронт-бэк будет больше путаницы, чем пользы</p>
+
+<!--more-->
+
+
+<p>Попробую разделить на уровне контроллеров и вьюшек, тупо создав подпапки front и Back, в которых будут (предположительно) этакие &#8220;надконтроллеры&#8221; общего назначения, а сторонние модули надо постараться не трогать вообще, за исключением может быть вьюшек. Попытка не пытка -). Каталог собственного производства так же загоню в отдельный модуль. Причём очень хочется разделить собственно каталог от системы заказов и корзины. Пока слабо понимаю, как это сделать. Вьюшки по любому пересекутся требуя и того и другого и третьего.</p>
+
+<p>Вобщем желаний много, а как это всё сделать пока не очень понятно. Ну главное начать копать от КПП и к обеду что-нибудь прояснится.</p>
+
+<h2>Первичная настройка</h2>
+
+<h3>Куда деть фрэймворк?</h3>
+
+<p>Сам фрэймворк у меня оказался за бортом www директории. Как-то мне это не нравится. Кому как, а мне не по фен-шую. Перенес фрэймворк в <code>www/protected/lib/yii</code>
+В файле <code>www/index.php</code> поменял путь к нему:
+<code>$yii=dirname(__FILE__).'/protected/lib/yii/yii.php';</code>
+По мне так красивее, чем миллион ../../../  и т.д. Опять же, если это всё перерастет из ознакомления для души в работу, лучше сразу готовить нормальные сани, а на некоторых хостингах с папкой &#8220;за рутом&#8221; могут всякие проблемы возникнуть.</p>
+
+<h3>Подключение к БД.</h3>
+
+<p>Создал БД <code>jcat</code>.
+В файле <code>protected/config/main.php</code> раскомментил блок подключения к MySQL и настроил на базу, а подключение к лайт вырубил:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'>    <span class="c1">// ......  </span>
+</span><span class='line'>    <span class="cm">/*</span>
+</span><span class='line'><span class="cm">    &#39;db&#39;=&gt;array(</span>
+</span><span class='line'><span class="cm">        &#39;connectionString&#39; =&gt; &#39;sqlite:&#39;.dirname(__FILE__).&#39;/../data/testdrive.db&#39;,</span>
+</span><span class='line'><span class="cm">    ),</span>
+</span><span class='line'><span class="cm">    */</span>
+</span><span class='line'>    <span class="c1">// uncomment the following to use a MySQL database</span>
+</span><span class='line'>    <span class="s1">&#39;db&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>        <span class="s1">&#39;connectionString&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;mysql:host=localhost;dbname=jcat&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;emulatePrepare&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;username&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;root&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;password&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;charset&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;utf8&#39;</span><span class="p">,</span>
+</span><span class='line'>    <span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Включение GII</h3>
+
+<p>Фишка yii - автоматическое создание кода CRUD - моделей, контроллеров, вьюшек на базе таблицы БД - штука приятная и полезная. В принципе в бэке можно и стандартными вьюшками обойтись, а во фронте как база.
+Вобщем оно мне надо. Включил раскомментировав в <em>config/main.php</em> соответствующую секцию и прописал в айпи фильтр адрес, на котором сайт на локале крутится и пароль.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'>   <span class="s1">&#39;gii&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>      <span class="s1">&#39;class&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;system.gii.GiiModule&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="s1">&#39;password&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;12345&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="c1">// If removed, Gii defaults to localhost only. Edit carefully to taste.</span>
+</span><span class='line'>      <span class="s1">&#39;ipFilters&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;127.0.0.10&#39;</span><span class="p">,</span><span class="s1">&#39;::1&#39;</span><span class="p">),</span>
+</span><span class='line'>    <span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Включение ЧПУ</h3>
+
+<p>Ну а куда без них? Пока тоже всё просто - надо только снять комментарии с секции URLManager в том же главном файле конфигурации:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'>   <span class="c1">// uncomment the following to enable URLs in path-format</span>
+</span><span class='line'>    <span class="s1">&#39;urlManager&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>      <span class="s1">&#39;urlFormat&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="s1">&#39;rules&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>            <span class="s1">&#39;&lt;controller:\w+&gt;/&lt;id:\d+&gt;&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;&lt;controller&gt;/view&#39;</span><span class="p">,</span>
+</span><span class='line'>          <span class="s1">&#39;&lt;controller:\w+&gt;/&lt;action:\w+&gt;/&lt;id:\d+&gt;&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;&lt;controller&gt;/&lt;action&gt;&#39;</span><span class="p">,</span>
+</span><span class='line'>          <span class="s1">&#39;&lt;controller:\w+&gt;/&lt;action:\w+&gt;&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;&lt;controller&gt;/&lt;action&gt;&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="p">),</span>
+</span><span class='line'>    <span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Ага. Просто. Как говорится, &#8220;ну вот, началось&#8221;. <em>index.php</em> из адреса никуда не делся. Некрасяво. Надо бы разобраться. Придётся шаманить с <em>urlManager</em> и <em>.htaccess</em>. Впрочем можно и не шаманить самому, всё уже придумано до нас. минута на гугле и есть решение. Писать дольше чем делать, но обещал себе родимому.
+Итак, всё просто. в корне создаём &#8220;.htaccess&#8221;. Туда рисуем:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'>    <span class="nx">RewriteEngine</span> <span class="nx">on</span>
+</span><span class='line'>    <span class="c1"># if a directory or a file exists, use it directly</span>
+</span><span class='line'>    <span class="nx">RewriteCond</span> <span class="o">%</span><span class="p">{</span><span class="nx">REQUEST_FILENAME</span><span class="p">}</span> <span class="o">!-</span><span class="nx">f</span>
+</span><span class='line'>    <span class="nx">RewriteCond</span> <span class="o">%</span><span class="p">{</span><span class="nx">REQUEST_FILENAME</span><span class="p">}</span> <span class="o">!-</span><span class="nx">d</span>
+</span><span class='line'>    <span class="c1"># otherwise forward it to index.php</span>
+</span><span class='line'>    <span class="nx">RewriteRule</span> <span class="o">.</span> <span class="nx">index</span><span class="o">.</span><span class="nx">php</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>а в конфиге добавляем параметр для <strong>urlManager</strong>: <code>'showScriptName' =&gt; false,</code>, то есть секция теперь выглядит так:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'>    <span class="s1">&#39;urlManager&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>      <span class="s1">&#39;urlFormat&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
+</span><span class='line'>        <span class="s1">&#39;showScriptName&#39;</span> <span class="o">=&gt;</span> <span class="k">false</span><span class="p">,</span>
+</span><span class='line'>        <span class="s1">&#39;rules&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>       <span class="s1">&#39;&lt;controller:\w+&gt;/&lt;id:\d+&gt;&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;&lt;controller&gt;/view&#39;</span><span class="p">,</span>
+</span><span class='line'>       <span class="s1">&#39;&lt;controller:\w+&gt;/&lt;action:\w+&gt;/&lt;id:\d+&gt;&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;&lt;controller&gt;/&lt;action&gt;&#39;</span><span class="p">,</span>
+</span><span class='line'>       <span class="s1">&#39;&lt;controller:\w+&gt;/&lt;action:\w+&gt;&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;&lt;controller&gt;/&lt;action&gt;&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="p">),</span>
+</span><span class='line'>    <span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Правда если переходить в меню сгенерированного приложения по ссылке <strong>&#8220;About&#8221;</strong>, в адреной строке появляется <code>http://locyii/site/page?view=about</code>, но это уже проблема менюшки, так как <code>http://locyii/site/page/view/about</code> вполне себе работает. А с меню потом. Может и меню то другое будет.</p>
+
+<p>Ну вот, начальную настройку считаю завершенной. На всё про всё ушло минут 20, это вместе с просматриванием доков на yiiframework.ru. Писал эту простыню гораздо дольше :-)</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">AngryGantz</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-03T02:20:00+06:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/jcfyii/'>JCFYii</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://AngryGantz.github.com/blog/2012/12/03/jcfyii-2/" data-via="" data-counturl="http://AngryGantz.github.com/blog/2012/12/03/jcfyii-2/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/12/03/new-post/" title="Previous Post: JCFYii 1. Описание">&laquo; JCFYii 1. Описание</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/12/03/jcfyii-3/" title="Next Post: JCFYii 3. Bootstrap">JCFYii 3. Bootstrap &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Последние заметки</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/12/03/categoty-in-sidebar-octopress/">Секция категорий в сайдбаре Octopress</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/03/jcfyii-6/">JCFYii 6. Каталог товаров</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/03/jcfyii-5/">JCFYii 5. Дизайн-макет</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/03/jcfyii-4/">JCFYii 4 Управление пользователями и правами.</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/03/jcfyii-3/">JCFYii 3. Bootstrap</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/AngryGantz">@AngryGantz</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'AngryGantz',
+            count: 2,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+  <h1>Категории</h1>
+  <ul id="categories">
+    <li class='category cat_list cat_list'><a href='/blog/categories/jcfyii/'>JCFYii (6)</a>&nbsp;&nbsp;</li>
+<li class='category cat_list cat_list'><a href='/blog/categories/octopress/'>Octopress (1)</a>&nbsp;&nbsp;</li>
+<li class='category cat_list cat_list'><a href='/blog/categories/yii/'>Yii (3)</a>&nbsp;&nbsp;</li>
+
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - AngryGantz -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'angrygantzblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://AngryGantz.github.com/blog/2012/12/03/jcfyii-2/';
+        var disqus_url = 'http://AngryGantz.github.com/blog/2012/12/03/jcfyii-2/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
