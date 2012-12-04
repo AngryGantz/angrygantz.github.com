@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>AngryGantz</title>
+  <title>Блог-машина Octopress+Slitaz - AngryGantz</title>
   <meta name="author" content="AngryGantz">
 
   
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://AngryGantz.github.com/">
+  <link rel="canonical" href="http://AngryGantz.github.com/blog/2012/12/04/octopress-on-slitaz/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -64,15 +64,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2012/12/04/octopress-on-slitaz/">Блог-машина Octopress+Slitaz</a></h1>
+      <h1 class="entry-title">Блог-машина Octopress+Slitaz</h1>
     
     
       <p class="meta">
@@ -90,14 +87,14 @@
 
 <time datetime="2012-12-04T08:21:00+00:00" pubdate data-updated="true">Dec 4<span>th</span>, 2012</time>
         
-         | <a href="/blog/2012/12/04/octopress-on-slitaz/#disqus_thread">Comments</a>
+         | <a href="#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>Как-то у меня не получилось любови между Windows и Octopress. Не знаю, может это я такой везучий но при генерации постов периодически выползали ошибки «Неверный аргумент UTF-8». Бесило, что я никак не мог понять откуда и что. Обычная текстовая строка. Стираешь её, пишешь то же самое, ошибка пропадает. (естественно локали были настроены, все файлы utf и так далее.</p>
+<div class="entry-content"><p>Как-то у меня не получилось любови между Windows и Octopress. Не знаю, может это я такой везучий но при генерации постов периодически выползали ошибки «Неверный аргумент UTF-8». Бесило, что я никак не мог понять откуда и что. Обычная текстовая строка. Стираешь её, пишешь то же самое, ошибка пропадает. (естественно локали были настроены, все файлы utf и так далее.</p>
 
 <p>Устав бороться непойми с чем, решил сделать себе виртуальную машинку с Linux под блог и для других всяких мелочей, где Linux предпочтительнее. Причем не на основном компьютере, а на &#8220;таскаемом ноутбуке&#8221;. Рабочий нотик у меня старенький, особо нагружать не хотелось. Да и места там свободного кои наплакал. Не то что-бы каждый мегабайт критичен, но и не размахнешся.</p>
 
@@ -207,66 +204,16 @@
 
 <p>Собственно на этом установка завершена. можно проверить работоспособность. дайте 2 команды. <code>rake new\_post["My First Post Octo"]</code> и затем <code>rake gen\_deploy</code>. Если всё сделано правильно, вы минут через 10 сможете лицезреть свой новый блог с вашим первым постом по адресу, соответствующему названию репозитория (например pupkin.github.com)</p>
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/03/categoty-in-sidebar-octopress/">Секция категорий в сайдбаре Octopress</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
   
 
+<span class="byline author vcard">Posted by <span class="fn">AngryGantz</span></span>
 
-<time datetime="2012-12-03T21:12:00+00:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2012</time>
-        
-         | <a href="/blog/2012/12/03/categoty-in-sidebar-octopress/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>В стандартной поставке Octopress остутствует как ни странно модуль для сайдбара со списком категорий блога.
-Исправляем сей небольшой недостаток.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/12/03/categoty-in-sidebar-octopress/">Подробно &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/03/jcfyii-6/">JCFYii 6. Каталог товаров</a></h1>
-    
-    
-      <p class="meta">
-        
 
 
 
@@ -278,256 +225,44 @@
   
 
 
-<time datetime="2012-12-03T19:15:00+00:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2012</time>
-        
-         | <a href="/blog/2012/12/03/jcfyii-6/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Так. Пора приступать к каталогу товаров. Буду делать отдельным модулем. В этот же модуль пойдёт всё, что относится к заказам. В конечном итоге У меня будет несколько групп заказчиков и плюс менеджеры, обрабатывающие заказ. Модуль буду делать максимально автономным. В данном случае он будет работать совместно со связкой Y-ii+rights, но в принципе это не обязательно. Просто надо будет реализовать какой-то простой API связи с юзерами и ролями, желательно в одном файле. Офрмлю скорее всего в виде хелпера или отдельного класса типа &#8220;ApiToUser&#8221; где будет проверка на принадлежность к группе и выдёргивание нужных полей из модуля Yii-User типа имени пользователя и, может быть, ещё каких либо полей профайла. Таким образом можно будет добиться полной автономии модуля от всего, кроме расширения bootstrap. Но на эту зависимость иду вполне осознанно. В принципе можно конечно bootstrap засунуть прямо в модуль, но он в приложении везде использоваться будет. Вобщем если вдруг этот эксперимент нечаянно по прихоти судьбы будет нужен ещё кому-то кроме меня, он сам сможет засунуть bootstrap в модуль и получить полную автономность.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/12/03/jcfyii-6/">Подробно &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
+<time datetime="2012-12-04T08:21:00+00:00" pubdate data-updated="true">Dec 4<span>th</span>, 2012</time>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/03/jcfyii-5/">JCFYii 5. Дизайн-макет</a></h1>
-    
-    
-      <p class="meta">
-        
 
-
-
-
-
-
-
-
+<span class="categories">
   
+    <a class='category' href='/blog/categories/-linux/'>-Linux</a>, <a class='category' href='/blog/categories/-octopress/'>-Octopress</a>, <a class='category' href='/blog/categories/-slitaz/'>-Slitaz</a>
+  
+</span>
 
 
-<time datetime="2012-12-03T18:24:00+00:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2012</time>
-        
-         | <a href="/blog/2012/12/03/jcfyii-5/#disqus_thread">Comments</a>
-        
-      </p>
+    </p>
     
-  </header>
-
-
-  <div class="entry-content"><p>Надо поднастроить <strong>main.css</strong>. Во первых дать отступ body на ширину меню, во вторых убрать border. Пусть страничка беленькая будет. Получаем вот такой код css для трех важных для этого элементов:</p>
-
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://AngryGantz.github.com/blog/2012/12/04/octopress-on-slitaz/" data-via="" data-counturl="http://AngryGantz.github.com/blog/2012/12/04/octopress-on-slitaz/" >Tweet</a>
+  
+  
+  
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/12/03/jcfyii-5/">Подробно &rarr;</a>
-    </footer>
-  
 
-
-    </article>
-  
-  
-    <article>
+    
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/03/jcfyii-4/">JCFYii 4 Управление пользователями и правами.</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-03T11:13:00+00:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2012</time>
-        
-         | <a href="/blog/2012/12/03/jcfyii-4/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Что нужно практически в любом web-приложении? Что бы мы не делали, практически всегда необходима система управления пользователями и их правами. Только совсем простейшие проекты обходятся без этого. Поэтому до перехода ко всему остальному надо прикрутить что-то такое к проекту.</p>
-
-<p>В Yii реализована схема управления правами RBAC, есть готовые менеджеры авторизации пользователей (для БД и файла). Чудненько. Но мы ещё упростим себе жизнь и не будем отписывать реализацию, а воспользуемся чем нибудь готовым. Как сказано в одном хорошем кино «всё уже покрадено до нас». Написано как правило тоже. Так что вперед, на офф сайт за нужными плюшками.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/12/03/jcfyii-4/">Подробно &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
+        <a class="basic-alignment left" href="/blog/2012/12/03/categoty-in-sidebar-octopress/" title="Previous Post: Секция категорий в сайдбаре Octopress">&laquo; Секция категорий в сайдбаре Octopress</a>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/03/jcfyii-3/">JCFYii 3. Bootstrap</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-03T09:00:00+00:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2012</time>
-        
-         | <a href="/blog/2012/12/03/jcfyii-3/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Ну а куда сегодня без него? :-) Уж слишком полезная и удобная вещь. Однозначно буду использовать.
-Вот только вопрос как и в каком виде? На офф сайте несколько вроде как приятных расширений, которые упрощают работу с бутстрапом в рамках Yii - и оболочки для виджетов и шаблоны генератора кода для Gii и вообще много полезного&#8230;</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/12/03/jcfyii-3/">Подробно &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/03/jcfyii-2/">JCFYii 2. Выбор структуры и первичная настройка</a></h1>
-    
-    
-      <p class="meta">
-        
+    </p>
+  </footer>
+</article>
 
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-03T02:20:00+00:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2012</time>
-        
-         | <a href="/blog/2012/12/03/jcfyii-2/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Не тот случай, что-бы изобретать велосипеды. За базу взято стандартное приложение yii, генерируемое из консоли
-командой <code>% YiiRoot/framework/yiic webapp WebRoot/testdrive</code>.  Думаю это снимет часть проблем новичка. Хотя конечно правильнее на мой взгляд делить фронт и бэк. А тут по структуре всё вроде как в куче получается.
-Модули фронт и бэк можно использовать как вариант, но предполагается использование кучи сторонних разработок и модули юзеров, прав и т.д. - общие и при модулях фронт-бэк будет больше путаницы, чем пользы</p>
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/12/03/jcfyii-2/">Подробно &rarr;</a>
-    </footer>
-  
 
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/03/new-post/">JCFYii 1. Описание</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-03T01:05:00+00:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2012</time>
-        
-         | <a href="/blog/2012/12/03/new-post/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Вряд ли кого-то может заинтересовать то, что здесь есть и будет в ближайшее время.
-Просто я начал разбираться с новым для меня фрэймворком - yii и гитхаб использую в качестве некоего дневника
-сиих изысканий.  В качестве эксперимента решено попытаться воплотить на yii проект регионального сайта вендора.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/12/03/new-post/">Подробно &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Архив блога</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     <section>
@@ -560,7 +295,7 @@
 <section>
   <h1>GitHub Repos</h1>
   <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   
   <a href="https://github.com/AngryGantz">@AngryGantz</a> on GitHub
@@ -607,6 +342,7 @@
   
 </aside>
 
+
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -621,7 +357,10 @@
       var disqus_shortname = 'angrygantzblog';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://AngryGantz.github.com/blog/2012/12/04/octopress-on-slitaz/';
+        var disqus_url = 'http://AngryGantz.github.com/blog/2012/12/04/octopress-on-slitaz/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
