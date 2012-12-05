@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Linux | AngryGantz]]></title>
   <link href="http://AngryGantz.github.com/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://AngryGantz.github.com/"/>
-  <updated>2012-12-05T10:26:29+00:00</updated>
+  <updated>2012-12-05T12:43:26+00:00</updated>
   <id>http://AngryGantz.github.com/</id>
   <author>
     <name><![CDATA[AngryGantz]]></name>
@@ -201,7 +201,7 @@ LC_ALL=ru_RU.UTF-8
 
 <h2>На сладкое</h2>
 
-<p>Если вам лениво повторять весь процесс настройки, вы можете скачать готовую виртуальную машину <a href="/files/OctoMachine.zip">Отсюда</a>
+<p>Если вам лениво повторять весь процесс настройки, вы можете скачать готовую виртуальную машину <a href="http://rutracker.org/forum/viewtopic.php?t=4273085">отсюда</a>.
 Вам останется только подключить её к установленному Virtual Box  и проделать шаги 1-8 (кроме 3-го) из раздела установка Octopress.
 Вес архива - 173Mb.</p>
 
