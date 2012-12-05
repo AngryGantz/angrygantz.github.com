@@ -1,0 +1,591 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>JCFYii 4 Управление пользователями и правами. - AngryGantz</title>
+  <meta name="author" content="AngryGantz">
+
+  
+  <meta name="description" content="Что нужно практически в любом web-приложении? Что бы мы не делали, практически всегда необходима система управления пользователями и их правами. &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://AngryGantz.github.com/blog/2012/12/03/jcfyii-4/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="AngryGantz" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">AngryGantz</a></h1>
+  
+    <h2>Заметки о Web-стройках</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss email">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+    <li><a href="angrygantz@gmail.com" rel="subscribe-email" title="subscribe via email">Email</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:AngryGantz.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Блог</a></li>
+  <li><a href="/blog/archives">Архив</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">JCFYii 4 Управление пользователями и правами.</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-03T11:13:00+00:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Что нужно практически в любом web-приложении? Что бы мы не делали, практически всегда необходима система управления пользователями и их правами. Только совсем простейшие проекты обходятся без этого. Поэтому до перехода ко всему остальному надо прикрутить что-то такое к проекту.</p>
+
+<p>В Yii реализована схема управления правами RBAC, есть готовые менеджеры авторизации пользователей (для БД и файла). Чудненько. Но мы ещё упростим себе жизнь и не будем отписывать реализацию, а воспользуемся чем нибудь готовым. Как сказано в одном хорошем кино «всё уже покрадено до нас». Написано как правило тоже. Так что вперед, на офф сайт за нужными плюшками.</p>
+
+<!-- more -->
+
+
+<p>В разделе дополнений на офф сайте полно всякого разного по управлению пользователями и правами. Смотреть их все ни желания ни времени. Положимся на мнение общественности, рекомендующей Yii-User и Rights.</p>
+
+<h2>Yii-User</h2>
+
+<p><a href="http://www.yiiframework.com/extension/yii-user/">Страничка на оффсайте Yii</a></p>
+
+<p><a href="http://yii-user.2mx.org/">Домашняя страничка</a></p>
+
+<p>По описанию делает всё, что надо и не делает лишнего. Возможно не зря хвалили.
+Качаю, создаю папку <code>/protected/modules</code> , Папку <code>User</code> из архива кидаю туда.</p>
+
+<p>Далее всё включаем по мануалу в главном конфиге:</p>
+
+<p>В секцию <strong>import</strong> добавлено:</p>
+
+<pre><code>'application.models.*',
+'application.components.*',
+'application.modules.user.models.*',
+'application.modules.user.components.*',
+</code></pre>
+
+<ul>
+<li>В секцию <strong>modules</strong> после gii добавлено <code>user,</code></li>
+<li>В секции <strong>components</strong> уже прописан компонент <strong>user</strong>. Это демо-компонент, сгенерированный приложением.  Меняю на то, что в мануале по модулю:</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="s1">&#39;user&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>  <span class="c1">// enable cookie-based authentication</span>
+</span><span class='line'>  <span class="s1">&#39;allowAutoLogin&#39;</span><span class="o">=&gt;</span><span class="k">true</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;loginUrl&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;/user/login&#39;</span><span class="p">),</span>
+</span><span class='line'><span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Заодно надо почистить хвостики от старого. Удаляем компонент <strong>UserIdentity.php</strong>, из контроллера <strong>SiteController.php</strong> удаляем действия <strong>actionLogin()</strong> и <strong>actionLogout()</strong>, ибо использоваться будет модуль.  Так же удаляется полностью модель <strong>LoginForm.php</strong> и вьюшка <strong>site/login.php</strong>. Вроде всё. Идём дальше.</p>
+
+<ul>
+<li>Создание таблиц БД. Смотрим <strong>modules/user/data/schema.mysql.sql</strong> Там создание трёх таблиц и занесение пары аккаунтов - admin и demo. Вот только префиксы&#8230; Ну не люблю я эти «tbl_». Буду делать префиксы помодульно. Будет более менее осмысленно, когда (и если) проект разрастется. Меняю «tbl_» на «user_» и выполняю скрипт в MySQL. Но ведь очевидно, где-то была привязка к этим «tbl_». Начнем с файла модуля <strong>modules/user/UserModule.php</strong>. Нахожу вот такие строки:</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'>  <span class="k">public</span> <span class="nv">$tableUsers</span> <span class="o">=</span> <span class="s1">&#39;{ {users} }&#39;</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">public</span> <span class="nv">$tableProfiles</span> <span class="o">=</span> <span class="s1">&#39;{ {profiles} }&#39;</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">public</span> <span class="nv">$tableProfileFields</span> <span class="o">=</span> <span class="s1">&#39;{ {profiles_fields} }&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Это даже не привязка к «tbl_». Даже не знаю, как понимать. Может это связано с настройкой модуля из консоли через миграции? Что-такое читал. Ну да бог с ним. В любом случае это паблик свойства и их можно переопределить прямо в глобальном конфиге приложения, в секции модуля <strong>user</strong>. Топаем в <strong>config/main.php</strong> и меняем сиротливую строку <code>user,</code> на секцию</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="s1">&#39;user&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>  <span class="s1">&#39;tableUsers&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;user_users&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;tableProfiles&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;user_profiles&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;tableProfileFields&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;user_profiles_fields&#39;</span><span class="p">,</span>
+</span><span class='line'><span class="p">),</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Ну и последнее. Прописать эти все радости в меню. Меню нарисовано в <strong>view/layouts/main.php</strong> Выбрасываю оттуда неактуальные <strong>Login</strong> и <strong>Logout</strong> и особо не всматриваясь копипастом из мануала загоняю туда блок</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="k">array</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="o">=&gt;</span><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getModule</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">loginUrl</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;label&#39;</span><span class="o">=&gt;</span><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getModule</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">t</span><span class="p">(</span><span class="s2">&quot;Login&quot;</span><span class="p">),</span> <span class="s1">&#39;visible&#39;</span><span class="o">=&gt;</span><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">user</span><span class="o">-&gt;</span><span class="na">isGuest</span><span class="p">),</span>
+</span><span class='line'><span class="k">array</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="o">=&gt;</span><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getModule</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">registrationUrl</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;label&#39;</span><span class="o">=&gt;</span><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getModule</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">t</span><span class="p">(</span><span class="s2">&quot;Register&quot;</span><span class="p">),</span> <span class="s1">&#39;visible&#39;</span><span class="o">=&gt;</span><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">user</span><span class="o">-&gt;</span><span class="na">isGuest</span><span class="p">),</span>
+</span><span class='line'><span class="k">array</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="o">=&gt;</span><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getModule</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">profileUrl</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;label&#39;</span><span class="o">=&gt;</span><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getModule</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">t</span><span class="p">(</span><span class="s2">&quot;Profile&quot;</span><span class="p">),</span> <span class="s1">&#39;visible&#39;</span><span class="o">=&gt;!</span><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">user</span><span class="o">-&gt;</span><span class="na">isGuest</span><span class="p">),</span>
+</span><span class='line'><span class="k">array</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="o">=&gt;</span><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getModule</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">logoutUrl</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;label&#39;</span><span class="o">=&gt;</span><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getModule</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">t</span><span class="p">(</span><span class="s2">&quot;Logout&quot;</span><span class="p">)</span><span class="o">.</span><span class="s1">&#39; (&#39;</span><span class="o">.</span><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">user</span><span class="o">-&gt;</span><span class="na">name</span><span class="o">.</span><span class="s1">&#39;)&#39;</span><span class="p">,</span>
+</span><span class='line'><span class="s1">&#39;visible&#39;</span><span class="o">=&gt;!</span><span class="nx">Yii</span><span class="o">::</span><span class="na">app</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">user</span><span class="o">-&gt;</span><span class="na">isGuest</span><span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Проверяем модуль. Ссылки меню, регистрация, логин-логаут, всё работает. Приятно. Да, всё конечно англицкое, придется с этим всем повозиться потом. Причём чует моё сердце писсимиста, что если делать интернационализацию &#8220;по фен-шую&#8221; то повозиться придется долго. В идеале даже во вьюшках текста прямого быть не должно, только вызовы мессаджей. Но боюсь, что на этот мазохизм меня всё таки не хватит. Хотя&#8230; Пишу же эти простыни, кто знает&#8230; :-)</p>
+
+<p>Но главное, модуль работает, логика своё отрабатывает, а внешний вид и языки потом. Сначала строим логику.</p>
+
+<h2>Модуль RIGHTS</h2>
+
+<p><a href="http://www.yiiframework.com/extension/rights">Страничка на оффсайте</a>
+Это модуль управления правами пользователей. Зачем он мне нужен? Ну как минимум у меня предполагается Гость, Админ, Клиент (дилер) и Менеджер. В дальнейшем возможно ещё розничные клиенты, какой нибудь старший менеджер и так далее и тому подобное. В Yii реализована система управления правами RBAC. <a href="http://yiiframework.ru/doc/guide/ru/topics.auth">Подробности тут</a>. Rights вроде как предоставляет полный инструментарий для управления и использования этой системы. То, что бегло прочитал, понравилось. Вопрос на сколько это удобно и как этот модуль &#8220;сработается&#8221; с предыдущим установленным - Yii-User. Начнем.</p>
+
+<h3>Установка.</h3>
+
+<p>Скачиваю мануальчик и сам модуль. Папку <strong>rights</strong> из архива кидаем в модули и читаем мануальчик.
+Так. Первое. В требованиях наличие БД (ну это понятно) и наличие модели <strong>user</strong> с атрибутами <strong>id</strong> и <strong>name</strong>. В нашей табличке <strong>user_users</strong> поле <strong>id</strong> есть, а вот вместо поля <strong>name</strong> имеем <strong>username</strong>. Но пролистав документацию в разделе конфигурации вижу <code>'userNameColumn'=&gt;'username',</code> причём это по дефолту, даже менять ничего не надо. Возвращаюсь к инсталляции модуля. Первое стандартно - импорт.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="s1">&#39;import&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>  <span class="s1">&#39;application.modules.rights.*&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;application.modules.rights.components.*&#39;</span><span class="p">,</span> <span class="c1">// Correct paths if necessary. </span>
+</span><span class='line'><span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>А вот дальше интересно:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="s1">&#39;components&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>  <span class="s1">&#39;user&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>      <span class="s1">&#39;class&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;RWebUser&#39;</span><span class="p">,</span> <span class="c1">// Allows super users access implicitly. </span>
+</span><span class='line'>  <span class="p">),</span>
+</span><span class='line'><span class="s1">&#39;authManager&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>      <span class="s1">&#39;class&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;RDbAuthManager&#39;</span><span class="p">,</span> <span class="c1">// Provides support authorization item sorting. </span>
+</span><span class='line'>  <span class="p">),</span>
+</span><span class='line'><span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>С менеджером аутентификации всё ясно - подключаем менеджера, работающего через БД. А вот <strong>user</strong>&#8230;
+Гложат меня смутные сомнения что не всё гладко будет&#8230; Надеюсь зря.
+Делаем и продолжаем. Просто добавляем в секцию <strong>user</strong> компонентов (<strong>и не путать с аналогичной секцией в модулях!</strong>) строку с определением класса. Пока до выяснения получится вот что:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="s1">&#39;user&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>      <span class="s1">&#39;class&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;RWebUser&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="c1">// enable cookie-based authentication</span>
+</span><span class='line'>      <span class="s1">&#39;allowAutoLogin&#39;</span><span class="o">=&gt;</span><span class="k">true</span><span class="p">,</span>
+</span><span class='line'>      <span class="s1">&#39;loginUrl&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;/user/login&#39;</span><span class="p">),</span>
+</span><span class='line'><span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>В секции модулей рисуем как в мануале, только <strong>installer</strong> пока ставлю <strong>false</strong>, сначала надо разобраться чего это за зверь, мне ещё с табличками и префиксами разобраться надо, а то нарисует чего попало в базу&#8230;</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="s1">&#39;rights&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>  <span class="s1">&#39;install&#39;</span><span class="o">=&gt;</span><span class="k">false</span><span class="p">,</span> <span class="c1">// Enables the installer. ), </span>
+</span><span class='line'> <span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Так, смотрим дальше. В конфиге по дефолту <code>'superuserName'=&gt;'Admin',</code>, а у нас юзер - <strong>admin</strong>.
+На всякий случай меняем. Секция в модулях теперь такая:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="s1">&#39;rights&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>  <span class="s1">&#39;install&#39;</span><span class="o">=&gt;</span><span class="k">false</span><span class="p">,</span> <span class="c1">// Enables the installer. </span>
+</span><span class='line'>  <span class="s1">&#39;superuserName&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span>
+</span><span class='line'> <span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Остальные дефолты вроде устраивают. В файле <strong>modules/rights/data/schema.sql</strong> меняем названия таблиц соответственно на <strong>rights_auth_item, rights_auth_item_child, rights_auth_assignment, rights_rights</strong> не только добавив префикс модуля, но сменив тип нотации со стиля &#8220;CaMel&#8221; для единообразия в БД. Теперь смотрим где в модуле они привязаны. Собственно упоминания есть только в файле <strong>components/RInstaller.php</strong>. Но менять ничего не надо, поскольку судя по блоку, где они упоминаются, инсталлер сам корректирует названия в зависимости от схемы sql. Но. Тут есть одно большое Но. Провозился почти час, пока дошло. Дело в том, что к именам таблиц привязан и родной <strong>authManager CDbAuthManager</strong> И, соответственно, кроме того, что мы меняем имена таблиц в SQL файле, их надо ещё указать в компоненте authManager. И последний штрих - надо назначить роль по умолчанию для незалогиненых пользователей <code>'defaultRoles'=&gt;array('Guest'),</code> То есть секция этого компонента должна выглядеть вот так (таблица <strong>rights</strong> - это уже детище наследника из установленного модуля):</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="s1">&#39;authManager&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>  <span class="s1">&#39;class&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;RDbAuthManager&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;assignmentTable&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;rights_auth_assignment&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;itemChildTable&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;rights_auth_item_child&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;itemTable&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;rights_auth_item&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;rightsTable&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;rights_rights&#39;</span><span class="p">,</span>
+</span><span class='line'> <span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>А теперь собственно никто не мешает воспользоваться инсталлером модуля. В секции модулей у модуля <strong>rights</strong> возвращаем в <strong>true</strong> свойство <strong>install</strong>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="s1">&#39;rights&#39;</span><span class="o">=&gt;</span><span class="k">array</span><span class="p">(</span>
+</span><span class='line'>  <span class="s1">&#39;install&#39;</span><span class="o">=&gt;</span><span class="k">true</span><span class="p">,</span> <span class="c1">// Enables the installer. </span>
+</span><span class='line'>  <span class="s1">&#39;superuserName&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span>
+</span><span class='line'>  
+</span><span class='line'> <span class="p">),</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Теперь даем в браузере команду <strong>../rights/</strong> и наслаждаемся поздравлениями об успешной установке. Проверив таблицы в БД убеждаемся, что они созданы с нужными именами. Уффф&#8230; помучился.</p>
+
+<p>Да, где-то по дороге вычитал ещё одну тонкость. Прежде чем устанавливать <strong>модуль Rights</strong> необходимо полностью установить <strong>Yii-User</strong>, авторизоваться под админом и только после этого ставить <strong>rights</strong>. Иначе возникнут дополнительные проблемы. У меня это &#8220;на автомате&#8221; получилось, а народ мучается&#8230;</p>
+
+<p>Теперь в конфиге надо отключить инсталлер выставив <strong>false</strong> уже лениво писать где :-)</p>
+
+<p>Но с окончательной установкой модуля ещё не всё. Во первых есть генератор разрешений для всех контроллеров (это по идеологии RBAC <strong>задачи, tasks</strong> ) и всех действий внутри контроллеров отдельно ( <strong>операции</strong> по RBAC) разрешение на которые можно присвоить любой роли или любому пользователю. Ну это постепенно буду соображать кому, что и зачем. А вот как поизящнее делать видимым элемент на вьюшке в зависимости от роли, надо будет решать уже скоро.</p>
+
+<p>Для включения нового функционала - фильтров построенных на базе rights,  осталось только унаследовать стандартный контроллер приложения не от CController, а от RController и в контроллерах можно использовать функции фильтров rights примерно так:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>
+</span><span class='line'><span class="k">public</span> <span class="k">function</span> <span class="nf">filters</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="k">array</span><span class="p">(</span> <span class="s1">&#39;rights&#39;</span><span class="p">,</span> <span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="nx">ublic</span> <span class="k">function</span> <span class="nf">allowedActions</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="s1">&#39;index, suggestedTags&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>allowedActions</strong> - перечисление действий, которые будут доступны всем и всегда вне зависимости от установленных прав.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">AngryGantz</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-03T11:13:00+00:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/jcfyii/'>JCFYii</a>, <a class='category' href='/blog/categories/yii/'>Yii</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://AngryGantz.github.com/blog/2012/12/03/jcfyii-4/" data-via="" data-counturl="http://AngryGantz.github.com/blog/2012/12/03/jcfyii-4/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/12/03/jcfyii-3/" title="Previous Post: JCFYii 3. Bootstrap">&laquo; JCFYii 3. Bootstrap</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/12/03/jcfyii-5/" title="Next Post: JCFYii 5. Дизайн-макет">JCFYii 5. Дизайн-макет &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Последние заметки</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/12/04/octopress-on-slitaz/">Блог-машина Octopress+Slitaz</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/03/categoty-in-sidebar-octopress/">Секция категорий в сайдбаре Octopress</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/03/jcfyii-6/">JCFYii 6. Каталог товаров</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/03/jcfyii-5/">JCFYii 5. Дизайн-макет</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/03/jcfyii-4/">JCFYii 4 Управление пользователями и правами.</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/AngryGantz">@AngryGantz</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'AngryGantz',
+            count: 2,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+  <h1>Категории</h1>
+  <ul id="categories">
+    <li class='category cat_list cat_list'><a href='/blog/categories/jcfyii/'>JCFYii (6)</a>&nbsp;&nbsp;</li>
+<li class='category cat_list cat_list'><a href='/blog/categories/linux/'>Linux (1)</a>&nbsp;&nbsp;</li>
+<li class='category cat_list cat_list'><a href='/blog/categories/octopress/'>Octopress (2)</a>&nbsp;&nbsp;</li>
+<li class='category cat_list cat_list'><a href='/blog/categories/slitaz/'>Slitaz (1)</a>&nbsp;&nbsp;</li>
+<li class='category cat_list cat_list'><a href='/blog/categories/yii/'>Yii (3)</a>&nbsp;&nbsp;</li>
+
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - AngryGantz -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'angrygantzblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://AngryGantz.github.com/blog/2012/12/03/jcfyii-4/';
+        var disqus_url = 'http://AngryGantz.github.com/blog/2012/12/03/jcfyii-4/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
